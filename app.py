@@ -13,3 +13,7 @@ def login():
 @app.route("/addEducation")
 def addEducation():
     return render_template('addEducation.html')
+
+@app.route("/addExperience")
+def addExpereience():
+    return render_template('addExperience.html')
