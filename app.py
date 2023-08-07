@@ -21,6 +21,12 @@ def signup():
 def addEducation():
     return render_template('addEducation.html')
 
+#Route for addExperience
 @app.route("/addExperience")
 def addExpereience():
     return render_template('addExperience.html')
+
+#Route for addCertification
+@app.route("/addCertification")
+def addExpereience():
+    return render_template('addCertification.html')
