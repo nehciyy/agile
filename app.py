@@ -28,5 +28,5 @@ def addExpereience():
 
 #Route for addCertification
 @app.route("/addCertification")
-def addExpereience():
+def addCertification():
     return render_template('addCertification.html')
