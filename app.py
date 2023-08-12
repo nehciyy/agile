@@ -30,3 +30,7 @@ def addExpereience():
 @app.route("/addCertification")
 def addCertification():
     return render_template('addCertification.html')
+
+@app.route("/addSkill")
+def addSkill():
+    return render_template('addSkill.html')
