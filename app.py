@@ -1,17 +1,9 @@
-<<<<<<< Updated upstream
-from flask import Flask, render_template, request, url_for, redirect, session, flash
-import sqlite3
-
-app = Flask(__name__)
-app.secret_key="__privatekey__"
-=======
 from flask import Flask, render_template, request, url_for, redirect, session, flash, g
 
 import sqlite3
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
->>>>>>> Stashed changes
 
 #DB Connection Function Object
 def get_db_connection():
@@ -31,7 +23,6 @@ def index():
 @app.route("/login", methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        print('am i here')
         email = request.form['email']
         password = request.form['password']
 
@@ -41,16 +32,14 @@ def login():
         if user: 
             session['logged_in'] = True
             session['user_id'] = user['user_id']
-            print(session['user_id'])
             return redirect(url_for('index'))
         else: 
             print('failed to login')
     if request.method == 'GET': 
-        print('i am in get method')
         return render_template('login.html')
 
 #Route for signup
-@app.route("/signup", methods=['POST', 'GET'])
+@app.route("/signup")
 def signup():
     return render_template('signup.html')
 
