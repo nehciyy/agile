@@ -1,8 +1,17 @@
+<<<<<<< Updated upstream
 from flask import Flask, render_template, request, url_for, redirect, session, flash
 import sqlite3
 
 app = Flask(__name__)
 app.secret_key="__privatekey__"
+=======
+from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+
+import sqlite3
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+>>>>>>> Stashed changes
 
 #DB Connection Function Object
 def get_db_connection():
@@ -19,9 +28,26 @@ def index():
     return render_template('index.html', users=users)
 
 #Route for login
-@app.route("/login")
+@app.route("/login", methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        print('am i here')
+        email = request.form['email']
+        password = request.form['password']
+
+        db = get_db_connection()
+        user = db.execute('SELECT user_id FROM Users WHERE email = ? AND password_hash =?', (email, password)).fetchone()
+        # return page. 
+        if user: 
+            session['logged_in'] = True
+            session['user_id'] = user['user_id']
+            print(session['user_id'])
+            return redirect(url_for('index'))
+        else: 
+            print('failed to login')
+    if request.method == 'GET': 
+        print('i am in get method')
+        return render_template('login.html')
 
 #Route for signup
 @app.route("/signup", methods=['POST', 'GET'])
@@ -37,11 +63,6 @@ def addEducation():
 @app.route("/addExperience")
 def addExpereience():
     return render_template('addExperience.html')
-
-#Route for addCertification
-@app.route("/addCertification")
-def addExpereience():
-    return render_template('addCertification.html')
 
 #Route for profile
 @app.route("/profile")
