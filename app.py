@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key="__privatekey__"
 
 #DB Connection Function Object
 def get_db_connection():
@@ -23,7 +24,7 @@ def login():
     return render_template('login.html')
 
 #Route for signup
-@app.route("/signup")
+@app.route("/signup", methods=['POST', 'GET'])
 def signup():
     return render_template('signup.html')
 

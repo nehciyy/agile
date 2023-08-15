@@ -17,7 +17,7 @@ data_to_insert = [
 
 cur.executemany(
     "INSERT INTO Users (user_name, email, password_hash, date_of_birth, gender) VALUES (?,?,?,?,?)",
-    data_to_insert,
+    data_to_insert
 )
 
 
