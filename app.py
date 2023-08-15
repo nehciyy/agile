@@ -46,8 +46,6 @@ def addExpereience():
 @app.route("/profile")
 def profile():
     return render_template('profile.html')
-def addCertification():
-    return render_template('addCertification.html')
 
 @app.route("/addSkill")
 def addSkill():
