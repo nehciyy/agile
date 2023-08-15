@@ -1,10 +1,21 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+import sqlite3
 
 app = Flask(__name__)
 
+#DB Connection Function Object
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+#Routes
 @app.route("/")
 def index():
-    return "index"
+    conn = get_db_connection()
+    users = conn.execute('SELECT * FROM Users').fetchall()
+    conn.close()  
+    return render_template('index.html', users=users)
 
 #Route for login
 @app.route("/login")
@@ -35,3 +46,9 @@ def addExpereience():
 @app.route("/profile")
 def profile():
     return render_template('profile.html')
+def addCertification():
+    return render_template('addCertification.html')
+
+@app.route("/addSkill")
+def addSkill():
+    return render_template('addSkill.html')
