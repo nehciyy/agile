@@ -30,3 +30,8 @@ def addExpereience():
 @app.route("/addCertification")
 def addExpereience():
     return render_template('addCertification.html')
+
+#Route for profile
+@app.route("/profile")
+def profile():
+    return render_template('profile.html')
