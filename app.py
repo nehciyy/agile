@@ -63,6 +63,12 @@ def addCertification():
 def profile():
     return render_template('profile.html')
 
+#Route for addSkill
 @app.route("/addSkill")
 def addSkill():
     return render_template('addSkill.html')
+
+#Route for administrator
+@app.route("/administrator")
+def administrator():
+    return render_template('administrator.html')
