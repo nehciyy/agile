@@ -2,14 +2,71 @@
 PRAGMA foreign_keys=ON;
 
 BEGIN TRANSACTION;
-
---create your tables with SQL commands here (watch out for slight syntactical differences with SQLite)
-
-CREATE TABLE IF NOT EXISTS Users (
+-- Create User Table
+CREATE TABLE User (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    date_of_birth TEXT,
-    gender TEXT
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL
+);
+
+-- Create Accounts Table
+CREATE TABLE Accounts (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userid INTEGER,
+    First_name VARCHAR(50) NOT NULL,
+    Last_name VARCHAR(50) NOT NULL,
+    date_of_birth TEXT, -- Format: YYYY-MM-DD
+    gender TEXT CHECK (gender IN ('Male', 'Female')), 
+    FOREIGN KEY (userid) REFERENCES User(user_id)
+);
+
+-- Create Skills Table
+CREATE TABLE Skills (
+    skill_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER,
+    skills VARCHAR(50) NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Create Experience Table
+CREATE TABLE Experience (
+    experience_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER,
+    Title VARCHAR(50) NOT NULL,
+    isInRole BOOLEAN NOT NULL, 
+    start_month TEXT NOT NULL,  
+    start_year INTEGER NOT NULL, 
+    end_month TEXT NOT NULL,
+    end_year INTEGER NOT NULL ,
+    industry VARCHAR(50) NOT NULL,
+    description VARCHAR(200), 
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Create Education Table
+CREATE TABLE Education (
+    education_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER,
+    degree VARCHAR(50) NOT NULL,
+    field_of_study VARCHAR(100) NOT NULL,
+    start_month TEXT NOT NULL,
+    start_year INTEGER NOT NULL,
+    end_month TEXT NOT NULL,
+    end_year INTEGER NOT NULL,
+    grade TEXT NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Create Certificate Table
+CREATE TABLE Certificate (
+    certificate_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER,
+    name_of_certificate VARCHAR(50) NOT NULL,
+    Issuing_organization VARCHAR(50) NOT NULL,
+    issue_month TEXT NOT NULL,
+    issue_year INTEGER NOT NULL,
+    end_month TEXT NOT NULL,
+    end_year INTEGER NOT NULL,
+    isExpired BOOLEAN NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );

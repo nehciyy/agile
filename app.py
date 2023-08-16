@@ -35,7 +35,7 @@ def login():
             return redirect(url_for('index'))
         else: 
             print('failed to login')
-    if request.method == 'GET': 
+    if request.method == 'GET':         
         return render_template('login.html')
 
 #Route for signup
@@ -52,6 +52,11 @@ def addEducation():
 @app.route("/addExperience")
 def addExpereience():
     return render_template('addExperience.html')
+
+#Route for addCertification
+@app.route("/addCertification")
+def addCertification():
+    return render_template('addCertification.html')
 
 #Route for profile
 @app.route("/profile")
