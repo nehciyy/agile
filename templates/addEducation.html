@@ -23,7 +23,7 @@
   <body>
     <div class="container">
 
-        <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+        <form class="well form-horizontal" action="/addEducation" method="post"  id="contact_form">
     <fieldset>
     
     <!-- Form Name -->
@@ -232,13 +232,20 @@
       <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input  name="grade" placeholder="Grade" class="form-control"  type="text">
+      <input  name="grade" placeholder="Grade" class="form-control"  type="number">
         </div>
       </div>
     </div>
     
    
-    
+     <!-- Submit Button -->
+     <div class="form-group">
+      <label class="col-md-4 control-label"></label>
+      <div class="col-md-4">
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
     </fieldset>
     </form>
     </div>
