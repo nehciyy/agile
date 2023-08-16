@@ -53,6 +53,11 @@ def addEducation():
 def addExpereience():
     return render_template('addExperience.html')
 
+#Route for addCertification
+@app.route("/addCertification")
+def addCertification():
+    return render_template('addCertification.html')
+
 #Route for profile
 @app.route("/profile")
 def profile():
