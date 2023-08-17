@@ -72,3 +72,8 @@ def addSkill():
 @app.route("/administrator")
 def administrator():
     return render_template('administrator.html')
+
+#Route for homepage
+@app.route("/addhomepage")
+def homepage():
+    return render_template('homepage.html')
