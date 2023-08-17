@@ -70,8 +70,24 @@ def addEducation():
     return render_template('addEducation.html')
 
 #Route for addExperience
-@app.route("/addExperience")
-def addExpereience():
+@app.route("/addExperienceData", methods=['GET','POST'])
+def addExperienceData():
+ if request.method == 'POST':
+    Title = request.form['Title']
+    employmentType = request.form['employmentType']
+    start_month = request.form['start_month']  
+    start_year = request.form['start_year']
+    end_month = request.form['end_month']
+    end_year = request.form['end_year']
+    industry = request.form['industry']
+
+    db = get_db_connection()
+    user = db.execute('INSERT INTO Experience (Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?)', (Title, employmentType, start_month, start_year, end_month, end_year, industry))
+    db.commit()
+
+@app.route("/addExperience", methods=['GET','POST'])
+def addExperience():
+    addExperienceData()
     return render_template('addExperience.html')
 
 #Route for addCertification
