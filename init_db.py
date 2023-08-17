@@ -36,7 +36,6 @@ cur.executemany(
     accountData_to_insert
 )
 
-
 connection.commit()
 print("Database Created: Connection Opened")
 connection.close()
