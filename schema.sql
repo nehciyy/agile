@@ -3,7 +3,7 @@ PRAGMA foreign_keys=ON;
 
 BEGIN TRANSACTION;
 -- Create User Table
-CREATE TABLE User (
+CREATE TABLE Users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(50) NOT NULL
@@ -17,7 +17,7 @@ CREATE TABLE Accounts (
     Last_name VARCHAR(50) NOT NULL,
     date_of_birth TEXT NOT NULL, -- Format: YYYY-MM-DD
     gender TEXT CHECK (gender IN ('Male', 'Female')), 
-    FOREIGN KEY (userid) REFERENCES User(user_id)
+    FOREIGN KEY (userid) REFERENCES Users(user_id)
 );
 
 -- Create Skills Table
@@ -53,7 +53,7 @@ CREATE TABLE Education (
     start_year INTEGER NOT NULL,
     end_month TEXT NOT NULL,
     end_year INTEGER NOT NULL,
-    grade TEXT NOT NULL,
+    grade DECIMAL(3,2) NOT NULL,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 

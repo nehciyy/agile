@@ -19,6 +19,11 @@ def index():
     conn.close()  
     return render_template('index.html', users=users)
 
+#Route for signup
+@app.route("/home")
+def home():
+    return render_template('home.html')
+
 #Route for login
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -44,8 +49,24 @@ def signup():
     return render_template('signup.html')
 
 #Route for addEducation
-@app.route("/addEducation")
+@app.route("/addEducationData", methods=['GET','POST'])
+def addEducationData():
+ if request.method == 'POST':
+       degree = request.form['degree']
+       field_of_study = request.form['field_of_study']
+       start_month = request.form['start_month']
+       start_year  = request.form['start_year']
+       end_month = request.form['end_month']
+       end_year = request.form['end_year']
+       grade = request.form['grade']
+       
+       db = get_db_connection()
+       user = db.execute('INSERT INTO Education (degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?)', (degree, field_of_study, start_month, start_year, end_month, end_year, grade))
+       db.commit()
+
+@app.route("/addEducation", methods=['GET','POST'])
 def addEducation():
+    addEducationData()
     return render_template('addEducation.html')
 
 #Route for addExperience
