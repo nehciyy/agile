@@ -27,7 +27,7 @@ def login():
         password = request.form['password']
 
         db = get_db_connection()
-        user = db.execute('SELECT user_id FROM Users WHERE email = ? AND password_hash =?', (email, password)).fetchone()
+        user = db.execute('SELECT user_id FROM Users WHERE email = ? AND password =?', (email, password)).fetchone()
         # return page. 
         if user: 
             session['logged_in'] = True
