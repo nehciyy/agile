@@ -19,6 +19,11 @@ def index():
     conn.close()  
     return render_template('index.html', users=users)
 
+#Route for signup
+@app.route("/home")
+def home():
+    return render_template('home.html')
+
 #Route for login
 @app.route("/login", methods=['GET','POST'])
 def login():
