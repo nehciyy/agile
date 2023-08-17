@@ -25,6 +25,7 @@ CREATE TABLE Skills (
     skill_id INTEGER PRIMARY KEY AUTOINCREMENT,
     account_id INTEGER,
     skills VARCHAR(50) NOT NULL,
+    proficiency TEXT NOT NULL,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
