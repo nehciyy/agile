@@ -32,7 +32,7 @@ def login():
         password = request.form['password']
 
         db = get_db_connection()
-        user = db.execute('SELECT user_id FROM Users WHERE email = ? AND password_hash =?', (email, password)).fetchone()
+        user = db.execute('SELECT user_id FROM Users WHERE email = ? AND password =?', (email, password)).fetchone()
         # return page. 
         if user: 
             session['logged_in'] = True
@@ -40,13 +40,40 @@ def login():
             return redirect(url_for('index'))
         else: 
             print('failed to login')
-    if request.method == 'GET': 
+    if request.method == 'GET':         
         return render_template('login.html')
 
-#Route for signup
-@app.route("/signup")
+@app.route("/signup", methods=['GET','POST'])
 def signup():
-    return render_template('signup.html')
+    if request.method == 'POST':  
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        email = request.form['email']
+        dateofbirth = request.form['date_of_birth']
+        gender = request.form['gender']
+        password = request.form['password']
+        confirmpassword = request.form['confirmpassword']
+
+        if password == confirmpassword: 
+            db = get_db_connection()
+            # Insert into User Table
+            cursor = db.cursor()
+            cursor.execute("INSERT INTO User (email, password) VALUES (?, ?)", (email, password))
+            db.commit()
+            # Get the user_id of the inserted user
+            user_id = cursor.lastrowid
+            # Insert into Accounts Table
+            cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
+                        (user_id, firstname, lastname, dateofbirth, gender))
+            db.commit()
+            # Close the cursor and database connection
+            cursor.close()
+            db.close()            
+            return redirect(url_for('login'))
+        else: 
+            print('Password does not equal confirm-password')
+    if request.method == 'GET': 
+        return render_template('signup.html')
 
 #Route for addEducation
 @app.route("/addEducationData", methods=['GET','POST'])
@@ -70,8 +97,24 @@ def addEducation():
     return render_template('addEducation.html')
 
 #Route for addExperience
-@app.route("/addExperience")
-def addExpereience():
+@app.route("/addExperienceData", methods=['GET','POST'])
+def addExperienceData():
+ if request.method == 'POST':
+    Title = request.form['Title']
+    employmentType = request.form['employmentType']
+    start_month = request.form['start_month']  
+    start_year = request.form['start_year']
+    end_month = request.form['end_month']
+    end_year = request.form['end_year']
+    industry = request.form['industry']
+
+    db = get_db_connection()
+    user = db.execute('INSERT INTO Experience (Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?)', (Title, employmentType, start_month, start_year, end_month, end_year, industry))
+    db.commit()
+
+@app.route("/addExperience", methods=['GET','POST'])
+def addExperience():
+    addExperienceData()
     return render_template('addExperience.html')
 
 #Route for addCertification

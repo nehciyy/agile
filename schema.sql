@@ -25,6 +25,7 @@ CREATE TABLE Skills (
     skill_id INTEGER PRIMARY KEY AUTOINCREMENT,
     account_id INTEGER,
     skills VARCHAR(50) NOT NULL,
+    proficiency TEXT NOT NULL,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
@@ -33,11 +34,11 @@ CREATE TABLE Experience (
     experience_id INTEGER PRIMARY KEY AUTOINCREMENT,
     account_id INTEGER,
     Title VARCHAR(50) NOT NULL,
-    isInRole BOOLEAN NOT NULL, 
+    employmentType TEXT NOT NULL, 
     start_month TEXT NOT NULL,  
-    start_year INTEGER NOT NULL, 
+    start_year TEXT NOT NULL, 
     end_month TEXT NOT NULL,
-    end_year INTEGER NOT NULL ,
+    end_year TEXT NOT NULL ,
     industry VARCHAR(50) NOT NULL,
     description VARCHAR(200), 
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)

@@ -1,75 +1,141 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techworld Add Skills</title>
     <!--Local CSS-->
     <link href="../static/css/addSkill.css" rel="stylesheet">
+    <!--Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-  <body>
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/templates/homepage.html">TechWorld</a>
-      </nav>
-    <div class="container rounded bg-white mt-5 mb-5">
-        <div class="row">
-            <div class="col">
-                <div class="p-3 py-5 ">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="text-right">Add Skill</h6>
-                    </div>
-                    <div class="row">
-                        <div class="col"><label class="labels"></label><input type="text" class="form-control" placeholder="skill" value="Skill"></div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="text-right">Recommended Skill</h6>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container">
+            <a class="navbar-brand" href="#!">TechWorld</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Skills and Proficiency</h5>
+                        <form id="skills-form">
+                            <div class="skills-container">
+                                <div class="row skill-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="skills">Skills</label>
+                                            <input type="text" class="form-control" name="skills"
+                                                placeholder="Enter your skills">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group mb-4">
+                                            <label for="proficiency">Proficiency</label>
+                                            <select class="form-select" name="proficiency">
+                                                <option>Beginner</option>
+                                                <option>Intermediate</option>
+                                                <option>Advanced</option>
+                                                <option>Expert</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 text-center">
+                                        <div class="form-group mt-4">
+                                            <a class="delete-skill text-dark"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">HTML</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">CSS</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">JavaScript</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">Flutter</button>
+                            <div class="form-group mb-4">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <a id="add_skill" href="#!"><i class="fa fa-plus-circle"></i><span
+                                                class="add-skill-label" id="add">Add Skill</span></a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row mt-5">
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">Dart</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">Vue.js</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">MySQL</button>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <button type="button" class="btn btn-primary">C++</button>
-                                </div>
-                            </div>
+                            <button type="submit" class="btn btn-primary float-end">&nbsp;Save&nbsp;</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Added Skills</h5>
+                        <div class="list-group flex-wrap">
+                            <a class="list-group-item">Skill 1 <button class="delete-item text-dark float-end fa fa-times"></button></a>
+                            <a class="list-group-item">Skill 2</a>
+                            <a class="list-group-item">Skill 3</a>
+                            <a class="list-group-item">Skill 4</a>
                         </div>
                     </div>
-                    <div class="mt-5 text-right"><button class="btn btn-primary profile-button" type="button">Skip</button></div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--Jquery function to add skills-->
+    <script>
+        $(document).ready(function () {
+            // Add Skill button click event
+            $("#add_skill").click(function (e) {
+                e.preventDefault();
+                var newSkillRow = $(".skill-row").first().clone(); // Clone the first skill row
+                newSkillRow.find("input").val(""); // Clear the input value
+                $(".skills-container").append(newSkillRow); // Append the cloned row to the container
+                updateDeleteButtonsVisibility(); // Update delete button visibility
+            });
+
+            // Delete Skill button click event
+            $(document).on("click", ".delete-skill", function (e) {
+                e.preventDefault();
+                $(this).closest(".skill-row").remove(); // Remove the clicked skill row
+                updateDeleteButtonsVisibility(); // Update delete button visibility
+            });
+
+            // Function to update delete button visibility
+            function updateDeleteButtonsVisibility() {
+                var skillRows = $(".skill-row");
+                skillRows.each(function (index) {
+                    var deleteButton = $(this).find(".delete-skill");
+                    if (index === 0) {
+                        deleteButton.hide(); // Hide delete button for the first row
+                    } else {
+                        deleteButton.show(); // Show delete button for cloned rows
+                    }
+                });
+            }
+
+            // Initially update delete button visibility
+            updateDeleteButtonsVisibility();
+        });
+    </script>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>

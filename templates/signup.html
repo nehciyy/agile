@@ -25,7 +25,7 @@
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form>
+                    <form method="post" action="/signup">
                         <div class="d-flex flex-row align-items-center justify-content-center">
                             <h3 class="fw-bold mb-0 me-3">Welcome To Techworld</h3>
                         </div>
@@ -38,13 +38,15 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="firstname">First name:</label>
-                                    <input type="text" id="firstname" class="form-control" placeholder="First Name" />
+                                    <input type="text" id="firstname" name="firstname" class="form-control"
+                                        placeholder="First Name" />
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="lastname">Last name:</label>
-                                    <input type="text" id="lastname" class="form-control" placeholder="Last Name" />
+                                    <input type="text" id="lastname" name="lastname" class="form-control"
+                                        placeholder="Last Name" />
                                 </div>
                             </div>
                         </div>
@@ -52,7 +54,7 @@
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="email">Email address:</label>
-                            <input type="email" id="email" class="form-control"
+                            <input type="email" id="email" name="email" class="form-control"
                                 placeholder="Enter a valid email address" />
                         </div>
 
@@ -62,7 +64,8 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="datepicker">Date of Birth:</label>
                                     <div class="input-group date" id="datepicker">
-                                        <input type="text" class="form-control" id="date" placeholder="Date of Birth" />
+                                        <input type="text" class="form-control" name="date_of_birth" id="date"
+                                            placeholder="Date of Birth" />
                                         <span class="input-group-append">
                                             <span class="input-group-text bg-light d-block">
                                                 <i class="fa fa-calendar"></i>
@@ -87,15 +90,15 @@
                             <div class="col-md-6">
                                 <div class="form-outline mb-3">
                                     <label class="form-label" for="password">Password:</label>
-                                    <input type="password" id="password" class="form-control"
+                                    <input type="password" id="password" name="password" class="form-control"
                                         placeholder="Enter password" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-outline mb-3">
                                     <label class="form-label" for="confirm-password">Confirm Password:</label>
-                                    <input type="password" id="confirm-password" class="form-control"
-                                        placeholder="Confirm password" />
+                                    <input type="password" id="confirm-password" name="confirmpassword"
+                                        class="form-control" placeholder="Confirm password" />
                                 </div>
                             </div>
                         </div>
@@ -112,7 +115,7 @@
                         </div>
 
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="button" class="btn btn-primary"
+                            <button type="submit" class="btn btn-primary"
                                 style="padding-left: 2.5rem; padding-right: 2.5rem;">Sign Up</button>
                             <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                                     class="link-danger">Register</a></p>
