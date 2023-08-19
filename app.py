@@ -37,7 +37,7 @@ def login():
         if user: 
             session['logged_in'] = True
             session['user_id'] = user['user_id']
-            return redirect(url_for('index'))
+            return redirect(url_for('homepage'))
         else: 
             print('failed to login')
     if request.method == 'GET':         
@@ -53,25 +53,29 @@ def signup():
         gender = request.form['gender']
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
-
-        if password == confirmpassword: 
-            db = get_db_connection()
-            # Insert into User Table
-            cursor = db.cursor()
-            cursor.execute("INSERT INTO User (email, password) VALUES (?, ?)", (email, password))
-            db.commit()
-            # Get the user_id of the inserted user
-            user_id = cursor.lastrowid
-            # Insert into Accounts Table
-            cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
-                        (user_id, firstname, lastname, dateofbirth, gender))
-            db.commit()
-            # Close the cursor and database connection
-            cursor.close()
-            db.close()            
-            return redirect(url_for('login'))
+        if password != "" and confirmpassword != "":
+            if password == confirmpassword: 
+                db = get_db_connection()
+                # Insert into User Table
+                cursor = db.cursor()
+                cursor.execute("INSERT INTO Users (email, password) VALUES (?, ?)", (email, password))
+                db.commit()
+                # Get the user_id of the inserted user
+                user_id = cursor.lastrowid
+                # Insert into Accounts Table
+                cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
+                            (user_id, firstname, lastname, dateofbirth, gender))
+                db.commit()
+                # Close the cursor and database connection
+                cursor.close()
+                db.close()            
+                return redirect(url_for('login'))
+            else: 
+                print('Password does not equal confirm-password')
+                return redirect(url_for('signup'))      
         else: 
-            print('Password does not equal confirm-password')
+            print('Password or confirm password is not filled')
+            return redirect(url_for('signup'))                 
     if request.method == 'GET': 
         return render_template('signup.html')
 
