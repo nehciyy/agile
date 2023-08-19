@@ -15,7 +15,7 @@ def get_db_connection():
 @app.route("/")
 def index():
     conn = get_db_connection()
-    users = conn.execute('SELECT * FROM Users').fetchall()
+    users = conn.execute('SELECT * FROM Accounts').fetchall()
     conn.close()  
     return render_template('index.html', users=users)
 
@@ -53,26 +53,23 @@ def signup():
         gender = request.form['gender']
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
-        if password != "" and confirmpassword != "":
-            if password == confirmpassword: 
-                db = get_db_connection()
-                # Insert into User Table
-                cursor = db.cursor()
-                cursor.execute("INSERT INTO Users (email, password) VALUES (?, ?)", (email, password))
-                db.commit()
-                # Get the user_id of the inserted user
-                user_id = cursor.lastrowid
-                # Insert into Accounts Table
-                cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
-                            (user_id, firstname, lastname, dateofbirth, gender))
-                db.commit()
-                # Close the cursor and database connection
-                cursor.close()
-                db.close()            
-                return redirect(url_for('login'))
-            else: 
-                print('Password does not equal confirm-password')
-                return redirect(url_for('signup'))      
+
+        if password == confirmpassword: 
+            db = get_db_connection()
+            # Insert into User Table
+            cursor = db.cursor()
+            cursor.execute("INSERT INTO Users (email, password) VALUES (?, ?)", (email, password))
+            db.commit()
+            # Get the user_id of the inserted user
+            user_id = cursor.lastrowid
+            # Insert into Accounts Table
+            cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
+                        (user_id, firstname, lastname, dateofbirth, gender))
+            db.commit()
+            # Close the cursor and database connection
+            cursor.close()
+            db.close()            
+            return redirect(url_for('login'))
         else: 
             print('Password or confirm password is not filled')
             return redirect(url_for('signup'))                 
@@ -132,11 +129,28 @@ def profile():
     return render_template('profile.html')
 
 #Route for addSkill
-@app.route("/addSkill")
+@app.route("/addSkill", methods=['GET', 'POST'])
 def addSkill():
-    return render_template('addSkill.html')
+    if request.method == 'POST':
+        skills = request.form.getlist('skills[]')
+        proficiencies = request.form.getlist('proficiency[]')
 
-#Route for administrator
+        for skill, proficiency in zip(skills, proficiencies):
+            print(skill)
+            print(proficiency)
+
+            db = get_db_connection()
+            user = db.execute('INSERT INTO Skills (skills, proficiency) VALUES (?,?)', (skill,proficiency))
+            db.commit()
+            print('Success')
+
+    if request.method == 'GET':
+        conn = get_db_connection()
+        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills').fetchall()
+        conn.close()
+        return render_template('addSkill.html', skills=skills)
+
+#Route for administrators
 @app.route("/administrator")
 def administrator():
     return render_template('administrator.html')

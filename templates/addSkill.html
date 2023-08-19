@@ -31,20 +31,20 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Skills and Proficiency</h5>
-                        <form id="skills-form">
+                        <form id="skills-form" action="/addSkill" method="POST">
                             <div class="skills-container">
                                 <div class="row skill-row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-4">
                                             <label for="skills">Skills</label>
-                                            <input type="text" class="form-control" name="skills"
+                                            <input type="text" class="form-control" name="skills[]"
                                                 placeholder="Enter your skills">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group mb-4">
                                             <label for="proficiency">Proficiency</label>
-                                            <select class="form-select" name="proficiency">
+                                            <select class="form-select" name="proficiency[]">
                                                 <option>Beginner</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -77,10 +77,9 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Added Skills</h5>
                         <div class="list-group flex-wrap">
-                            <a class="list-group-item">Skill 1 <button class="delete-item text-dark float-end fa fa-times"></button></a>
-                            <a class="list-group-item">Skill 2</a>
-                            <a class="list-group-item">Skill 3</a>
-                            <a class="list-group-item">Skill 4</a>
+                            {% for account_id, skill, proficiency in skills %}
+                                <a class="list-group-item">{{account_id}} {{ skill }} ({{ proficiency }})</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
