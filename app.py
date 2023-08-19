@@ -134,19 +134,21 @@ def addSkill():
     if request.method == 'POST':
         skills = request.form.getlist('skills[]')
         proficiencies = request.form.getlist('proficiency[]')
+        account_id = session['user_id']
 
         for skill, proficiency in zip(skills, proficiencies):
             print(skill)
             print(proficiency)
 
             db = get_db_connection()
-            user = db.execute('INSERT INTO Skills (skills, proficiency) VALUES (?,?)', (skill,proficiency))
+            user = db.execute('INSERT INTO Skills (account_id, skills, proficiency) VALUES (?,?,?)', (account_id,skill,proficiency))
             db.commit()
             print('Success')
+            return redirect(url_for('addSkill'))
 
     if request.method == 'GET':
         conn = get_db_connection()
-        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills').fetchall()
+        skills = conn.execute('SELECT skills, proficiency FROM Skills').fetchall()
         conn.close()
         return render_template('addSkill.html', skills=skills)
 
