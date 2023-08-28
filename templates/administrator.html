@@ -123,6 +123,104 @@
                     href="../getting-started/introduction/">getting started guide</a>.</p>
         </div>
     </footer>
+            <div class="container">
+              <div class="container">
+                <nav class="navbar navbar-light bg-light">
+                  <a class="navbar-brand" href="/templates/homepage.html">TechWorld</a>
+                </nav>
+                <div class="row">
+                    <div class="col-4 mt-4">
+                      <div class="card mb-4" style="height: 600px">
+                        <div class="card-body text-center">
+                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                            class="rounded-circle img-fluid" style="width: 150px;">
+                          <h5 class="my-3">Aaron Chua</h5>
+                        </div>
+                      </div>
+                    </div>
+            <div class="col-lg-8 mt-4">
+                <div class="form-group"> 
+                    <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input  name="search" placeholder="Search" class="form-control"  type="text">
+                      </div>
+                    </div>
+                  </div>
+                <table class="table table-bordered" style="height: 600px;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="font-weight:normal">First Name</th>
+                        <th scope="col" style="font-weight:normal">Last Name</th>
+                        <th scope="col" style="font-weight:normal">Email</th>
+                        <th scope="col" style="font-weight:normal">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- <tr>
+                        <th scope="row" style="font-weight:normal">Timothy</th>
+                        <td>Chan</td>
+                        <td>Wctchan001@mymail.sim.edu.sg</td>
+                        <td>Delete</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" style="font-weight:normal">Sheng Long</th>
+                        <td>Ho</td>
+                        <td>slho008@mymail.sim.edu.sg</td>
+                        <td>Delete</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" style="font-weight:normal">Gareth</th>
+                        <td>Chia</td>
+                        <td>wygchia001@mymail.sim.edu.sg</td>
+                        <td>Delete</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" style="font-weight:normal">Anson</th>
+                        <td>Chua</td>
+                        <td>awxchua001@mymail.sim.edu.sg</td>
+                        <td>Delete</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" style="font-weight:normal">Yi Chen</th>
+                        <td>Chiang</td>
+                        <td>ycchiang001@mymail.sim.edu.sg</td>
+                        <td>Delete</td>
+                      </tr> -->
+                    
+                    {% block content %}
+                    {% for account in Accounts %}
+                    <div class='adminPost'>
+                      <tr>
+                        <th scope="row" style="font-weight:normal">{{account['First_name']}}</th>
+                        <td>{{account['Last_name']}}</td>
+                        <td>{{account['email']}}</td>
+                        <td>Delete</td>
+                      </tr>
+                    </div> 
+                    {% endfor %}
+                    {% endblock %}
+                    </tbody>
+                  </table>
+                  <nav aria-label="...">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
+            </div>
+    </div>
+</div>
+      </section>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

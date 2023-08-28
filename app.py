@@ -152,10 +152,29 @@ def addSkill():
         conn.close()
         return render_template('addSkill.html', skills=skills)
 
-#Route for administrators
-@app.route("/administrator")
+# Route for administrator
+@app.route("/administratorRun", methods=['GET','POST'])
+def administratorRun():
+ if request.method == 'GET':
+    email  = request.form['email']
+    First_name = request.form['First_name']
+    Last_name = request.form['Last_name']
+
+
+    db = get_db_connection()
+    user = db.execute(
+    # 'SELECT First_name, Last_name, Users.email FROM Accounts JOIN Users ON Users.user_id = Accounts.userid' , (First_name, Last_name, email)).fetchall()
+    'SELECT First_name, Last_name FROM Accounts WHERE First_name = ? AND Last_name = ?', (First_name, Last_name)).fetchall()
+    db.commit()
+
+@app.route("/administrator", methods=['GET','POST'])
 def administrator():
-    return render_template('administrator.html')
+    administratorRun()
+    return render_template("administrator.html", account=accounts)
+
+# @app.route("/administrator")
+# def administrator():
+#     return render_template('administrator.html')
 
 #Route for homepage
 @app.route("/addhomepage")
