@@ -8,6 +8,7 @@ text = []
 skills_list = []
 filename = 'data.csv'  # Update the filename with your CSV file
 
+
 #DB Connection Function Object
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -35,6 +36,7 @@ def select_for_skills(account_id):
     query = 'SELECT DISTINCT skills FROM Skills WHERE account_id = ?'
     result = conn.execute(query, (account_id,))
     row = result.fetchall()
+    print("this is for the testing -----------------------------------------------------")
     conn.close()
     if row: 
         for skill in row:
@@ -61,7 +63,7 @@ def jaccard_similarity(set1, set2):
     union = len(set1.union(set2))
     if union == 0:
         return 0.0  # To handle cases where both sets are empty
-    return intersection / union
+    return intersection / len(set2)
 
 def update_table(match, account_id, job_header, job_skills):
     conn = get_db_connection()
@@ -83,18 +85,14 @@ def main(session_id):
     result = conn.execute(query, [session_id])
     # Directly assign the fetched value to account_id
     account_id = result.fetchone()
-
     if account_id:
         account_id = account_id[0]  # Use indexing to get the value
     else:
         print(f"No account found for session {session_id}")
-
     userSkills = select_for_skills(account_id)
-    
     for entry in jobswithskills_list:
         skillihave = job_calc(userSkills,entry['Skills'])
+        match = accuracy(userSkills,jobswithskills_list,account_id)
 
-    match = accuracy(userSkills,jobswithskills_list,account_id)
-
-
+    
 

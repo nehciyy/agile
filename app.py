@@ -37,8 +37,7 @@ def login():
             session['logged_in'] = True
             session['user_id'] = user[0]
             print("LOGIN PAGE ----------------------------------------------------------- " + str(session['user_id']))
-
-            return redirect(url_for('homepage'))
+            return redirect(url_for('addSkill'))
         else: 
             print('failed to login')
     if request.method == 'GET':         
@@ -175,20 +174,38 @@ def administrator():
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])
 def homepage():
-    if request.method == "GET": 
+    if request.method == "GET":
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Delete rows that match the session user_id
+        query_delete = '''
+            DELETE FROM recommendateJobs
+            WHERE account_id IN (
+                SELECT account_id
+                FROM Accounts
+                WHERE userid = ?
+            )
+        '''
+        cursor.execute(query_delete, (session['user_id'],))
+        conn.commit()  # Commit the deletion
+
+        # After deletion, print and retrieve updated recommendations
         print("----------------------------------------------------------- " + str(session['user_id']))
         jobalgorithm.main(session['user_id'])
-        conn = get_db_connection() 
-        cursor = conn.cursor()
-        query = '''
-                SELECT R.* 
-                FROM recommendateJobs AS R
-                JOIN Accounts AS A ON R.account_id = A.account_id
-                WHERE A.userid = ?;
-                '''
-        cursor.execute(query, (session['user_id'],))
+        
+        # Query for recommendations after deletion
+        query_select = '''
+        SELECT R.* 
+        FROM recommendateJobs AS R
+        JOIN Accounts AS A ON R.account_id = A.account_id
+        WHERE A.userid = ? AND R.match <> 0.0
+        ORDER BY R.match DESC;
+        '''
+        cursor.execute(query_select, (session['user_id'],))
         results = cursor.fetchone()
         print(results)
+
         conn.close()
         return render_template('homepage.html', recommendations=results)
 
