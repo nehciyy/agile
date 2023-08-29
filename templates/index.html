@@ -24,12 +24,12 @@
       {% block content %}
       {% for user in users %}
       <div class='post'>
-        <p>{{ user['user_id'] }}</p>
-        <h2>{{ user['user_name'] }}</h2>
-        <p>{{ user['email'] }}</p>
-        <p>{{ user['password_hash'] }}</p>
-        <p>{{ user['date_of_birth'] }}</p>
+        <p>{{ user['account_id'] }}</p>
+        <h2>{{ user['First_name'] }}</h2>
+        <p>{{ user['Last_name'] }}</p>
         <p>{{ user['gender'] }}</p>
+        <p>{{ user['date_of_birth'] }}</p>
+        <p>{{ user['userid'] }}</p>
       </div>
       {% endfor %}
       {% endblock %}

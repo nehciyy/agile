@@ -17,34 +17,42 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-        <div class="container">
-            <a class="navbar-brand" href="#!">TechWorld</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <header data-bs-theme="dark">
+        <div class="collapse text-bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                </div>
+            </div>
         </div>
-    </nav>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="/templates/homepage.html" class="navbar-brand d-flex align-items-center">
+                    <strong>TechWorld</strong>
+                </a>
+            </div>
+        </div>
+    </header>
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="card mt-5">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Skills and Proficiency</h5>
-                        <form id="skills-form">
+                        <form id="skills-form" action="/addSkill" method="POST">
                             <div class="skills-container">
                                 <div class="row skill-row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-4">
                                             <label for="skills">Skills</label>
-                                            <input type="text" class="form-control" name="skills"
+                                            <input type="text" class="form-control" name="skills[]"
                                                 placeholder="Enter your skills">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group mb-4">
                                             <label for="proficiency">Proficiency</label>
-                                            <select class="form-select" name="proficiency">
+                                            <select class="form-select" name="proficiency[]">
                                                 <option>Beginner</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -77,10 +85,9 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Added Skills</h5>
                         <div class="list-group flex-wrap">
-                            <a class="list-group-item">Skill 1 <button class="delete-item text-dark float-end fa fa-times"></button></a>
-                            <a class="list-group-item">Skill 2</a>
-                            <a class="list-group-item">Skill 3</a>
-                            <a class="list-group-item">Skill 4</a>
+                            {% for skill, proficiency in skills %}
+                                <a class="list-group-item">{{ skill }} ({{ proficiency }})</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -124,7 +131,6 @@
             updateDeleteButtonsVisibility();
         });
     </script>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

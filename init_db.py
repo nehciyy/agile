@@ -4,7 +4,7 @@ connection = sqlite3.connect("database.db")
 
 
 with open("schema.sql") as f:
-    connection.executescript(f.read())
+   connection.executescript(f.read())
 cur = connection.cursor()
 
 # List of data to insert into Users table
@@ -16,9 +16,9 @@ userData_to_insert = [
 
 #List of data to insert into Accounts table
 accountData_to_insert = [
-    ("Aaron", "Lim", "2000/01/01", "Male"),
-    ("Emily", "Smith", "1995/03/15", "Female"),
-    ("John", "Doe", "1988/11/30", "Male"),
+    (1, "Aaron", "Lim", "2000/01/01", "Male"),
+    (2, "Emily", "Smith", "1995/03/15", "Female"),
+    (3, "John", "Doe", "1988/11/30", "Male"),
 ]
 
 # ("Aaron Lim", "aaronlim123@gmail.com", "Password001", "01/01/2000", "M"),
@@ -31,7 +31,7 @@ cur.executemany(
 )
 
 cur.executemany(
-    "INSERT INTO Accounts (First_name, Last_name, date_of_birth, gender) VALUES (?,?,?,?)",
+    "INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?,?,?,?,?)",
     accountData_to_insert
 )
 

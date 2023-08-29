@@ -16,7 +16,7 @@ CREATE TABLE Accounts (
     First_name VARCHAR(50) NOT NULL,
     Last_name VARCHAR(50) NOT NULL,
     date_of_birth TEXT NOT NULL, -- Format: YYYY-MM-DD
-    gender TEXT CHECK (gender IN ('Male', 'Female')), 
+    gender TEXT, 
     FOREIGN KEY (userid) REFERENCES Users(user_id)
 );
 
