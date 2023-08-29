@@ -29,6 +29,14 @@ CREATE TABLE Skills (
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
+-- Create Job Recommendation Table 
+CREATE TABLE Recommendation(
+    Recommendation_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    account_id INTEGER, 
+    accuracy DOUBLE 
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
 -- Create Experience Table
 CREATE TABLE Experience (
     experience_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,5 +77,15 @@ CREATE TABLE Certificate (
     end_month TEXT NOT NULL,
     end_year INTEGER NOT NULL,
     isExpired BOOLEAN NOT NULL,
+    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
+);
+
+-- Create recommendedJobs Table
+CREATE TABLE recommendateJobs (
+    recommendateJobs_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER,
+    jobheader TEXT,
+    jobskill TEXT,
+    match REAL,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );

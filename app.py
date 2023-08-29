@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash, g
 
 import sqlite3
+import recommendation as jobalgorithm
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -36,7 +38,9 @@ def login():
         # return page. 
         if user: 
             session['logged_in'] = True
-            session['user_id'] = user['user_id']
+            session['user_id'] = user[0]
+            print("LOGIN PAGE ----------------------------------------------------------- " + str(session['user_id']))
+
             return redirect(url_for('homepage'))
         else: 
             print('failed to login')
@@ -142,6 +146,22 @@ def administrator():
     return render_template('administrator.html')
 
 #Route for homepage
-@app.route("/addhomepage")
+@app.route("/addhomepage", methods=['GET','POST'])
 def homepage():
-    return render_template('homepage.html')
+    if request.method == "GET": 
+        print("----------------------------------------------------------- " + str(session['user_id']))
+        jobalgorithm.main(session['user_id'])
+        conn = get_db_connection() 
+        query = '''
+                SELECT R.* 
+                FROM recommendateJobs AS R
+                JOIN Accounts AS A ON R.account_id = A.account_id
+                WHERE A.userid = ?;
+                '''
+        conn.execute(query, (session['user_id'],))
+        results = conn.fetchall()
+        conn.close()
+
+        return render_template('homepage.html', recommendations=results)
+
+
