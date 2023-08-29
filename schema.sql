@@ -29,14 +29,6 @@ CREATE TABLE Skills (
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
--- Create Job Recommendation Table 
-CREATE TABLE Recommendation(
-    Recommendation_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    account_id INTEGER, 
-    accuracy DOUBLE 
-    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
-);
-
 -- Create Experience Table
 CREATE TABLE Experience (
     experience_id INTEGER PRIMARY KEY AUTOINCREMENT,

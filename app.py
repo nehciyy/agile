@@ -16,10 +16,7 @@ def get_db_connection():
 #Routes
 @app.route("/")
 def index():
-    conn = get_db_connection()
-    users = conn.execute('SELECT * FROM Accounts').fetchall()
-    conn.close()  
-    return render_template('index.html', users=users)
+    return render_template('login.html')
 
 #Route for signup
 @app.route("/home")
@@ -157,28 +154,23 @@ def addSkill():
         return render_template('addSkill.html', skills=skills)
 
 # Route for administrator
-@app.route("/administratorRun", methods=['GET','POST'])
-def administratorRun():
- if request.method == 'GET':
-    email  = request.form['email']
-    First_name = request.form['First_name']
-    Last_name = request.form['Last_name']
-
-
-    db = get_db_connection()
-    user = db.execute(
-    # 'SELECT First_name, Last_name, Users.email FROM Accounts JOIN Users ON Users.user_id = Accounts.userid' , (First_name, Last_name, email)).fetchall()
-    'SELECT First_name, Last_name FROM Accounts WHERE First_name = ? AND Last_name = ?', (First_name, Last_name)).fetchall()
-    db.commit()
-
 @app.route("/administrator", methods=['GET','POST'])
 def administrator():
-    administratorRun()
-    return render_template("administrator.html", account=accounts)
+    if request.method == 'GET':
+        email  = request.form['email']
+        First_name = request.form['First_name']
+        Last_name = request.form['Last_name']
 
-# @app.route("/administrator")
-# def administrator():
-#     return render_template('administrator.html')
+
+        db = get_db_connection()
+        user = db.execute(
+        # 'SELECT First_name, Last_name, Users.email FROM Accounts JOIN Users ON Users.user_id = Accounts.userid' , (First_name, Last_name, email)).fetchall()
+        'SELECT First_name, Last_name FROM Accounts WHERE First_name = ? AND Last_name = ?', (First_name, Last_name)).fetchall()
+        db.commit()
+        return render_template("administrator.html")
+    if request.method == 'POST':
+        #---
+        return render_template("administrator.html")
 
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])
@@ -187,16 +179,17 @@ def homepage():
         print("----------------------------------------------------------- " + str(session['user_id']))
         jobalgorithm.main(session['user_id'])
         conn = get_db_connection() 
+        cursor = conn.cursor()
         query = '''
                 SELECT R.* 
                 FROM recommendateJobs AS R
                 JOIN Accounts AS A ON R.account_id = A.account_id
                 WHERE A.userid = ?;
                 '''
-        conn.execute(query, (session['user_id'],))
-        results = conn.fetchall()
+        cursor.execute(query, (session['user_id'],))
+        results = cursor.fetchone()
+        print(results)
         conn.close()
-
         return render_template('homepage.html', recommendations=results)
 
 
