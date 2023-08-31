@@ -151,7 +151,7 @@ def addSkill():
         conn = get_db_connection()
         account_id = session['user_id']
         print(account_id)
-        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id)).fetchall()
+        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
         conn.close()
         return render_template('addSkill.html', skills=skills)
     
