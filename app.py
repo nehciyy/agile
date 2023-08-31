@@ -209,4 +209,7 @@ def homepage():
         conn.close()
         return render_template('homepage.html', recommendations=results)
 
-
+#Route for addEducation1
+@app.route("/addEducation1")
+def addEducation1():
+    return render_template('addEducation1.html')
