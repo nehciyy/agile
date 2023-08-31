@@ -85,8 +85,8 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Added Skills</h5>
                         <div class="list-group flex-wrap">
-                            {% for skill, proficiency in skills %}
-                                <a class="list-group-item">{{ skill }} ({{ proficiency }})</a>
+                            {% for account_id, skill, proficiency in skills %}
+                                <a class="list-group-item">{{account_id}} {{ skill }} ({{ proficiency }})</a>
                             {% endfor %}
                         </div>
                     </div>

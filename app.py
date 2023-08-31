@@ -136,40 +136,38 @@ def addSkill():
         proficiencies = request.form.getlist('proficiency[]')
         account_id = session['user_id']
 
-        for skill, proficiency in zip(skills, proficiencies):
-            print(skill)
-            print(proficiency)
+        print(skills)
+        print(proficiencies)
 
+        for skill, proficiency in zip(skills, proficiencies):
             db = get_db_connection()
             user = db.execute('INSERT INTO Skills (account_id, skills, proficiency) VALUES (?,?,?)', (account_id,skill,proficiency))
-            db.commit()
+            db.commit()       
             print('Success')
-            return redirect(url_for('addSkill'))
+
+        return redirect(url_for('addSkill'))
 
     if request.method == 'GET':
         conn = get_db_connection()
-        skills = conn.execute('SELECT skills, proficiency FROM Skills').fetchall()
+        account_id = session['user_id']
+        print(account_id)
+        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id)).fetchall()
         conn.close()
         return render_template('addSkill.html', skills=skills)
-
-# Route for administrator
+    
 @app.route("/administrator", methods=['GET','POST'])
 def administrator():
-    if request.method == 'GET':
-        email  = request.form['email']
-        First_name = request.form['First_name']
-        Last_name = request.form['Last_name']
+    if request.method == 'GET':  
+        conn = get_db_connection() 
+        query = "SELECT A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
+        user = conn.execute(query).fetchall()
+        conn.close()
+        
+    return render_template("administrator.html", accounts=user)
 
-
-        db = get_db_connection()
-        user = db.execute(
-        # 'SELECT First_name, Last_name, Users.email FROM Accounts JOIN Users ON Users.user_id = Accounts.userid' , (First_name, Last_name, email)).fetchall()
-        'SELECT First_name, Last_name FROM Accounts WHERE First_name = ? AND Last_name = ?', (First_name, Last_name)).fetchall()
-        db.commit()
-        return render_template("administrator.html")
-    if request.method == 'POST':
-        #---
-        return render_template("administrator.html")
+# @app.route("/administrator")
+# def administrator():
+#     return render_template('administrator.html')
 
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])

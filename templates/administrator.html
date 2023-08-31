@@ -188,8 +188,7 @@
                         <td>Delete</td>
                       </tr> -->
                     
-                    {% block content %}
-                    {% for account in Accounts %}
+                    {% for account in accounts %}
                     <div class='adminPost'>
                       <tr>
                         <th scope="row" style="font-weight:normal">{{account['First_name']}}</th>
@@ -199,7 +198,6 @@
                       </tr>
                     </div> 
                     {% endfor %}
-                    {% endblock %}
                     </tbody>
                   </table>
                   <nav aria-label="...">
