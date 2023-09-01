@@ -148,22 +148,57 @@ def addSkill():
         skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
         conn.close()
         return render_template('addSkill.html', skills=skills)
-    
-@app.route("/administrator", methods=['GET','POST'])
+
+#Route for administrator
+@app.route("/administrator", methods=['GET'])
 def administrator():
-    if request.method == 'POST':
-        conn = get_db_connection()
-        query = "DELETE FROM Accounts WHERE userid = ?"
-        user = conn.execute(query, (request.form['userid'],))
-        conn.commit()
-        
-    if request.method == 'GET':  
-        conn = get_db_connection() 
-        query = "SELECT A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
-        user = conn.execute(query).fetchall()
-        conn.close()
-        
+    conn = get_db_connection()
+    query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
+    user = conn.execute(query).fetchall()
+    conn.close()
     return render_template("administrator.html", accounts=user)
+
+@app.route("/deleteAccount", methods=['POST'])
+def delete_account():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Retrieve account_id from the form data
+        account_id = request.form.get('account_id')
+
+        # Execute the DELETE queries within a transaction
+        cursor.execute("BEGIN TRANSACTION;")
+
+        # Delete from Certificate table
+        cursor.execute("DELETE FROM Certificate WHERE account_id = ?", (account_id,))
+
+        # Delete from Education table
+        cursor.execute("DELETE FROM Education WHERE account_id = ?", (account_id,))
+
+        # Delete from Experience table
+        cursor.execute("DELETE FROM Experience WHERE account_id = ?", (account_id,))
+
+        # Delete from Skills table
+        cursor.execute("DELETE FROM Skills WHERE account_id = ?", (account_id,))
+
+        # Delete from Users table
+        cursor.execute("DELETE FROM Users WHERE user_id = (SELECT userid FROM Accounts WHERE account_id = ?)", (account_id,))
+
+        # Delete from Accounts table
+        cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
+
+        # Commit the transaction
+        cursor.execute("COMMIT;")
+
+        flash('All data related to the account has been deleted successfully!', 'success')
+
+    except Exception as e:
+        flash('An error occurred while deleting the account and related data.', 'error')
+    finally:
+        conn.close()
+
+    return redirect(url_for('administrator'))
 
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])
