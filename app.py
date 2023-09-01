@@ -79,7 +79,8 @@ def signup():
 #Route for addEducation
 @app.route("/addEducation", methods=['GET','POST'])
 def addEducation():
-     if request.method == 'POST':
+    if request.method == 'POST':
+       account_id = session['user_id']
        degree = request.form['degree']
        field_of_study = request.form['field_of_study']
        start_month = request.form['start_month']
@@ -89,15 +90,19 @@ def addEducation():
        grade = request.form['grade']
        
        db = get_db_connection()
-       user = db.execute('INSERT INTO Education (degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?)', (degree, field_of_study, start_month, start_year, end_month, end_year, grade))
+       user = db.execute('INSERT INTO Education (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade))
        db.commit()
-
-     return render_template('addEducation.html')
+       print("Success")
+       return redirect(url_for('addEducation'))
+    
+    if request.method == 'GET': 
+        return render_template('addEducation.html')
 
 #Route for addExperience
 @app.route("/addExperience", methods=['GET','POST'])
 def addExperience():
     if request.method == 'POST':
+        account_id = session['user_id']
         Title = request.form['Title']
         employmentType = request.form['employmentType']
         start_month = request.form['start_month']  
@@ -107,10 +112,13 @@ def addExperience():
         industry = request.form['industry']
 
         db = get_db_connection()
-        user = db.execute('INSERT INTO Experience (Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?)', (Title, employmentType, start_month, start_year, end_month, end_year, industry))
+        user = db.execute('INSERT INTO Experience (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry))
         db.commit()
-
-    return render_template('addExperience.html')
+        print('Success')
+        return redirect(url_for('addExperience'))
+    
+    if request.method == 'GET':
+        return render_template('addExperience.html')
 
 #Route for addCertification
 @app.route("/addCertification")
@@ -158,43 +166,35 @@ def administrator():
     conn.close()
     return render_template("administrator.html", accounts=user)
 
+#Route to delete account for administrator
 @app.route("/deleteAccount", methods=['POST'])
 def delete_account():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-
         # Retrieve account_id from the form data
         account_id = request.form.get('account_id')
-
         # Execute the DELETE queries within a transaction
         cursor.execute("BEGIN TRANSACTION;")
-
         # Delete from Certificate table
         cursor.execute("DELETE FROM Certificate WHERE account_id = ?", (account_id,))
-
         # Delete from Education table
         cursor.execute("DELETE FROM Education WHERE account_id = ?", (account_id,))
-
         # Delete from Experience table
         cursor.execute("DELETE FROM Experience WHERE account_id = ?", (account_id,))
-
         # Delete from Skills table
         cursor.execute("DELETE FROM Skills WHERE account_id = ?", (account_id,))
-
         # Delete from Users table
         cursor.execute("DELETE FROM Users WHERE user_id = (SELECT userid FROM Accounts WHERE account_id = ?)", (account_id,))
-
         # Delete from Accounts table
         cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
-
         # Commit the transaction
         cursor.execute("COMMIT;")
-
         flash('All data related to the account has been deleted successfully!', 'success')
 
     except Exception as e:
         flash('An error occurred while deleting the account and related data.', 'error')
+
     finally:
         conn.close()
 
