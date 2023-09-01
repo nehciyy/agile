@@ -77,9 +77,9 @@ def signup():
         return render_template('signup.html')
 
 #Route for addEducation
-@app.route("/addEducationData", methods=['GET','POST'])
-def addEducationData():
- if request.method == 'POST':
+@app.route("/addEducation", methods=['GET','POST'])
+def addEducation():
+     if request.method == 'POST':
        degree = request.form['degree']
        field_of_study = request.form['field_of_study']
        start_month = request.form['start_month']
@@ -92,30 +92,24 @@ def addEducationData():
        user = db.execute('INSERT INTO Education (degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?)', (degree, field_of_study, start_month, start_year, end_month, end_year, grade))
        db.commit()
 
-@app.route("/addEducation", methods=['GET','POST'])
-def addEducation():
-    addEducationData()
-    return render_template('addEducation.html')
+     return render_template('addEducation.html')
 
 #Route for addExperience
-@app.route("/addExperienceData", methods=['GET','POST'])
-def addExperienceData():
- if request.method == 'POST':
-    Title = request.form['Title']
-    employmentType = request.form['employmentType']
-    start_month = request.form['start_month']  
-    start_year = request.form['start_year']
-    end_month = request.form['end_month']
-    end_year = request.form['end_year']
-    industry = request.form['industry']
-
-    db = get_db_connection()
-    user = db.execute('INSERT INTO Experience (Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?)', (Title, employmentType, start_month, start_year, end_month, end_year, industry))
-    db.commit()
-
 @app.route("/addExperience", methods=['GET','POST'])
 def addExperience():
-    addExperienceData()
+    if request.method == 'POST':
+        Title = request.form['Title']
+        employmentType = request.form['employmentType']
+        start_month = request.form['start_month']  
+        start_year = request.form['start_year']
+        end_month = request.form['end_month']
+        end_year = request.form['end_year']
+        industry = request.form['industry']
+
+        db = get_db_connection()
+        user = db.execute('INSERT INTO Experience (Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?)', (Title, employmentType, start_month, start_year, end_month, end_year, industry))
+        db.commit()
+
     return render_template('addExperience.html')
 
 #Route for addCertification
@@ -157,6 +151,12 @@ def addSkill():
     
 @app.route("/administrator", methods=['GET','POST'])
 def administrator():
+    if request.method == 'POST':
+        conn = get_db_connection()
+        query = "DELETE FROM Accounts WHERE userid = ?"
+        user = conn.execute(query, (request.form['userid'],))
+        conn.commit()
+        
     if request.method == 'GET':  
         conn = get_db_connection() 
         query = "SELECT A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
@@ -164,10 +164,6 @@ def administrator():
         conn.close()
         
     return render_template("administrator.html", accounts=user)
-
-# @app.route("/administrator")
-# def administrator():
-#     return render_template('administrator.html')
 
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])
