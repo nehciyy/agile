@@ -104,3 +104,13 @@ h6{
     bottom: 23px;
 }
 
+
+.container{
+    max-width: 1170px;
+    margin: auto;
+}
+
+.footer{
+    background-color: #24262b;
+    padding: 70px 0;
+}
