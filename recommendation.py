@@ -8,6 +8,7 @@ text = []  # A list for storing some text data
 skills_list = []  # A list for storing skills data 
 filename = 'data.csv'  # CSV file containing job data
 
+# Function to establish a database connection
 def get_db_connection():
     conn = sqlite3.connect('database.db')  # Connect to a SQLite database
     conn.row_factory = sqlite3.Row  # Use dictionary-like rows
