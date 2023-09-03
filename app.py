@@ -37,7 +37,7 @@ def login():
             session['logged_in'] = True
             session['user_id'] = user[0]
             print("LOGIN PAGE ----------------------------------------------------------- " + str(session['user_id']))
-            return redirect(url_for('addSkill'))
+            return redirect(url_for('homepage'))
         else: 
             print('failed to login')
     if request.method == 'GET':         
@@ -69,7 +69,7 @@ def signup():
             # Close the cursor and database connection
             cursor.close()
             db.close()            
-            return redirect(url_for('login'))
+            return redirect(url_for('addSkill'))
         else: 
             print('Password or confirm password is not filled')
             return redirect(url_for('signup'))                 
