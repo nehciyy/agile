@@ -231,30 +231,16 @@
                 class="row mt-3 ms-auto"
                 style="display: flex; justify-content: center"
               >
-                <div class="oval1">
-                  <div
-                    style="
-                      position: relative;
-                      left: 5px;
-                      top: 7px;
-                      color: black;
-                    "
-                  >
-                    Compatability
-                  </div>
-                  <div class="oval2">
-                    <div
-                      style="
-                        position: relative;
-                        left: 10px;
-                        top: 2px;
-                        color: black;
-                      "
-                    >
-                      83%
-                    </div>
-                  </div>
+              <div class="oval1">
+                <div style="position:relative; left:5px; top:7px; color: black;">
+                    Compatibility
                 </div>
+                <div class="oval2">
+                    <div style="position:relative; left:10px; top:2px; color: black;">                    
+                        {{ recommendations['match'] }}% Match <!-- Include the match value here -->
+                    </div>
+                </div>
+            </div>
                 <a href="#!" class="text-body mt-1"
                   ><center>View Details</center></a
                 >
