@@ -13,6 +13,14 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# Checks if User is authenticated. 
+def authenticated():
+    if 'user_id' in session:
+        # User is authenticated, allow access 
+        return True
+    else:
+        # User is not authenticated, return False
+        return False
 #Routes
 @app.route("/")
 def index():
@@ -43,6 +51,14 @@ def login():
     if request.method == 'GET':         
         return render_template('login.html')
 
+#Route for logout
+@app.route('/logout')
+def logout():
+    # Remove the 'user_id' key from the session
+    session.pop('user_id', None)
+    # Redirect the user to the login page or any other desired destination
+    return redirect(url_for('login'))
+
 @app.route("/signup", methods=['GET','POST'])
 def signup():
     if request.method == 'POST':  
@@ -66,11 +82,16 @@ def signup():
             cursor.execute("INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
                         (user_id, firstname, lastname, dateofbirth, gender))
             db.commit()
+            user_id = cursor.lastrowid
+            # Add the user_id to the session
+            session['logged_in'] = True
+            session['user_id'] = user_id
+            print(session['user_id'])
             # Close the cursor and database connection
             cursor.close()
             db.close()            
             return redirect(url_for('addSkill'))
-        else: 
+        else:             
             print('Password or confirm password is not filled')
             return redirect(url_for('signup'))                 
     if request.method == 'GET': 
@@ -79,165 +100,193 @@ def signup():
 #Route for addEducation
 @app.route("/addEducation", methods=['GET','POST'])
 def addEducation():
-    if request.method == 'POST':
-       account_id = session['user_id']
-       degree = request.form['degree']
-       field_of_study = request.form['field_of_study']
-       start_month = request.form['start_month']
-       start_year  = request.form['start_year']
-       end_month = request.form['end_month']
-       end_year = request.form['end_year']
-       grade = request.form['grade']
-       
-       db = get_db_connection()
-       user = db.execute('INSERT INTO Education (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade))
-       db.commit()
-       print("Success")
-       return redirect(url_for('addEducation'))
-    
-    if request.method == 'GET': 
-        return render_template('addEducation.html')
+    if authenticated():
+        if request.method == 'POST':
+            account_id = session['user_id']
+            degree = request.form['degree']
+            field_of_study = request.form['field_of_study']
+            start_month = request.form['start_month']
+            start_year  = request.form['start_year']
+            end_month = request.form['end_month']
+            end_year = request.form['end_year']
+            grade = request.form['grade']
+            
+            db = get_db_connection()
+            user = db.execute('INSERT INTO Education (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade))
+            db.commit()
+            print("Success")
+            return redirect(url_for('addEducation'))
+        
+        if request.method == 'GET': 
+            return render_template('addEducation.html')
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 
 #Route for addExperience
 @app.route("/addExperience", methods=['GET','POST'])
 def addExperience():
-    if request.method == 'POST':
-        account_id = session['user_id']
-        Title = request.form['Title']
-        employmentType = request.form['employmentType']
-        start_month = request.form['start_month']  
-        start_year = request.form['start_year']
-        end_month = request.form['end_month']
-        end_year = request.form['end_year']
-        industry = request.form['industry']
+    if authenticated():
+        if request.method == 'POST':
+            account_id = session['user_id']
+            Title = request.form['Title']
+            employmentType = request.form['employmentType']
+            start_month = request.form['start_month']  
+            start_year = request.form['start_year']
+            end_month = request.form['end_month']
+            end_year = request.form['end_year']
+            industry = request.form['industry']
 
-        db = get_db_connection()
-        user = db.execute('INSERT INTO Experience (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry))
-        db.commit()
-        print('Success')
-        return redirect(url_for('addExperience'))
-    
-    if request.method == 'GET':
-        return render_template('addExperience.html')
+            db = get_db_connection()
+            user = db.execute('INSERT INTO Experience (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry))
+            db.commit()
+            print('Success')
+            return redirect(url_for('addExperience'))
+        
+        if request.method == 'GET':
+            return render_template('addExperience.html')
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 
 #Route for addCertification
 @app.route("/addCertification")
 def addCertification():
-    return render_template('addCertification.html')
+    if authenticated():
+        return render_template('addCertification.html')
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 
 #Route for profile
 @app.route("/profile")
 def profile():
-    return render_template('profile.html')
-
+    if authenticated():
+        return render_template('profile.html')
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 #Route for addSkill
 @app.route("/addSkill", methods=['GET', 'POST'])
 def addSkill():
-    if request.method == 'POST':
-        skills = request.form.getlist('skills[]')
-        proficiencies = request.form.getlist('proficiency[]')
-        account_id = session['user_id']
+    if authenticated():
+        if request.method == 'POST':
+            skills = request.form.getlist('skills[]')
+            proficiencies = request.form.getlist('proficiency[]')
+            account_id = session['user_id']
 
-        print(skills)
-        print(proficiencies)
+            print(skills)
+            print(proficiencies)
 
-        for skill, proficiency in zip(skills, proficiencies):
-            db = get_db_connection()
-            user = db.execute('INSERT INTO Skills (account_id, skills, proficiency) VALUES (?,?,?)', (account_id,skill,proficiency))
-            db.commit()       
-            print('Success')
+            for skill, proficiency in zip(skills, proficiencies):
+                db = get_db_connection()
+                user = db.execute('INSERT INTO Skills (account_id, skills, proficiency) VALUES (?,?,?)', (account_id,skill,proficiency))
+                db.commit()       
+                print('Success')
 
-        return redirect(url_for('addSkill'))
+            return redirect(url_for('addSkill'))
 
-    if request.method == 'GET':
-        conn = get_db_connection()
-        account_id = session['user_id']
-        print(account_id)
-        skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
-        conn.close()
-        return render_template('addSkill.html', skills=skills)
-
+        if request.method == 'GET':
+            conn = get_db_connection()
+            account_id = session['user_id']
+            print(account_id)
+            skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
+            conn.close()
+            return render_template('addSkill.html', skills=skills)
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 #Route for administrator
 @app.route("/administrator", methods=['GET'])
 def administrator():
-    conn = get_db_connection()
-    query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
-    user = conn.execute(query).fetchall()
-    conn.close()
-    return render_template("administrator.html", accounts=user)
+    if authenticated():
+        conn = get_db_connection()
+        query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
+        user = conn.execute(query).fetchall()
+        conn.close()
+        return render_template("administrator.html", accounts=user)
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 
 #Route to delete account for administrator
 @app.route("/deleteAccount", methods=['POST'])
 def delete_account():
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        # Retrieve account_id from the form data
-        account_id = request.form.get('account_id')
-        # Execute the DELETE queries within a transaction
-        cursor.execute("BEGIN TRANSACTION;")
-        # Delete from Certificate table
-        cursor.execute("DELETE FROM Certificate WHERE account_id = ?", (account_id,))
-        # Delete from Education table
-        cursor.execute("DELETE FROM Education WHERE account_id = ?", (account_id,))
-        # Delete from Experience table
-        cursor.execute("DELETE FROM Experience WHERE account_id = ?", (account_id,))
-        # Delete from Skills table
-        cursor.execute("DELETE FROM Skills WHERE account_id = ?", (account_id,))
-        # Delete from Users table
-        cursor.execute("DELETE FROM Users WHERE user_id = (SELECT userid FROM Accounts WHERE account_id = ?)", (account_id,))
-        # Delete from Accounts table
-        cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
-        # Commit the transaction
-        cursor.execute("COMMIT;")
-        flash('All data related to the account has been deleted successfully!', 'success')
+    if authenticated():
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            # Retrieve account_id from the form data
+            account_id = request.form.get('account_id')
+            # Execute the DELETE queries within a transaction
+            cursor.execute("BEGIN TRANSACTION;")
+            # Delete from Certificate table
+            cursor.execute("DELETE FROM Certificate WHERE account_id = ?", (account_id,))
+            # Delete from Education table
+            cursor.execute("DELETE FROM Education WHERE account_id = ?", (account_id,))
+            # Delete from Experience table
+            cursor.execute("DELETE FROM Experience WHERE account_id = ?", (account_id,))
+            # Delete from Skills table
+            cursor.execute("DELETE FROM Skills WHERE account_id = ?", (account_id,))
+            # Delete from Users table
+            cursor.execute("DELETE FROM Users WHERE user_id = (SELECT userid FROM Accounts WHERE account_id = ?)", (account_id,))
+            # Delete from Accounts table
+            cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
+            # Commit the transaction
+            cursor.execute("COMMIT;")
+            flash('All data related to the account has been deleted successfully!', 'success')
 
-    except Exception as e:
-        flash('An error occurred while deleting the account and related data.', 'error')
+        except Exception as e:
+            flash('An error occurred while deleting the account and related data.', 'error')
 
-    finally:
-        conn.close()
+        finally:
+            conn.close()
 
-    return redirect(url_for('administrator'))
-
+        return redirect(url_for('administrator'))
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 #Route for homepage
 @app.route("/addhomepage", methods=['GET','POST'])
 def homepage():
-    if request.method == "GET":
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    if authenticated():
+        if request.method == "GET":
+            conn = get_db_connection()
+            cursor = conn.cursor()
 
-        # Delete rows that match the session user_id
-        query_delete = '''
-            DELETE FROM recommendateJobs
-            WHERE account_id IN (
-                SELECT account_id
-                FROM Accounts
-                WHERE userid = ?
-            )
-        '''
-        cursor.execute(query_delete, (session['user_id'],))
-        conn.commit()  # Commit the deletion
+            # Delete rows that match the session user_id
+            query_delete = '''
+                DELETE FROM recommendateJobs
+                WHERE account_id IN (
+                    SELECT account_id
+                    FROM Accounts
+                    WHERE userid = ?
+                )
+            '''
+            cursor.execute(query_delete, (session['user_id'],))
+            conn.commit()  # Commit the deletion
 
-        # After deletion, print and retrieve updated recommendations
-        print("----------------------------------------------------------- " + str(session['user_id']))
-        jobalgorithm.main(session['user_id'])
-        
-        # Query for recommendations after deletion
-        query_select = '''
-        SELECT R.* 
-        FROM recommendateJobs AS R
-        JOIN Accounts AS A ON R.account_id = A.account_id
-        WHERE A.userid = ? AND R.match <> 0.0
-        ORDER BY R.match DESC;
-        '''
-        cursor.execute(query_select, (session['user_id'],))
-        results = cursor.fetchone()
-        print(results)
+            # After deletion, print and retrieve updated recommendations
+            print("----------------------------------------------------------- " + str(session['user_id']))
+            jobalgorithm.main(session['user_id'])
+            
+            # Query for recommendations after deletion
+            query_select = '''
+            SELECT R.* 
+            FROM recommendateJobs AS R
+            JOIN Accounts AS A ON R.account_id = A.account_id
+            WHERE A.userid = ? AND R.match <> 0.0
+            ORDER BY R.match DESC;
+            '''
+            cursor.execute(query_select, (session['user_id'],))
+            results = cursor.fetchone()
+            print(results)
 
-        conn.close()
-        return render_template('homepage.html', recommendations=results)
-
+            conn.close()
+            return render_template('homepage.html', recommendations=results)
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
 #Route for addEducation1
 @app.route("/addEducation1")
 def addEducation1():
