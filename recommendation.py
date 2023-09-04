@@ -51,6 +51,14 @@ def job_calc(job, text):
             count += 1
     return count
 
+def accuracy(skill_list, job_list, account_id):
+    for job in job_list: 
+        job_skills = set(job['Skills'])
+        user_skills = set(skill_list)
+        jaccard_sim = jaccard_similarity(user_skills, job_skills)
+        match = jaccard_sim * 100
+        update_table(match, account_id, job['Header'], job['Skills'])
+        
 # Function to calculate Jaccard similarity between two sets
 def jaccard_similarity(set1, set2):
     intersection = len(set1.intersection(set2))
