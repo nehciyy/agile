@@ -1,40 +1,46 @@
 import sqlite3
 
+# Establish a connection to the SQLite database named "database.db"
 connection = sqlite3.connect("database.db")
 
+# Open the schema.sql file and execute the SQL statements in it to create tables and define the schema
 with open("schema.sql") as f:
     connection.executescript(f.read())
 
+# Create a cursor object for executing SQL commands
 cur = connection.cursor()
 
-# List of data to insert into Users table
+# List of data to insert into the Users table
 userData_to_insert = [
-    ("aaronlim123@gmail.com","Password001"),
+    ("aaronlim123@gmail.com", "Password001"),
     ("emilysmith@example.com", "Password002"),
     ("johndoe@example.com", "Password003"),
 ]
 
-#List of data to insert into Accounts table
+# List of data to insert into the Accounts table
 accountData_to_insert = [
     (1, "Aaron", "Lim", "2000/01/01", "Male"),
     (2, "Emily", "Smith", "1995/03/15", "Female"),
     (3, "John", "Doe", "1988/11/30", "Male"),
 ]
 
-# ("Aaron Lim", "aaronlim123@gmail.com", "Password001", "01/01/2000", "M"),
-# ("Emily Smith", "emilysmith@example.com", "Password002", "03/15/1995", "F"),
-# ("John Doe", "johndoe@example.com", "Password003", "11/30/1988", "M"),
-
+# Use executemany to insert multiple rows into the Users table
 cur.executemany(
-    "INSERT INTO Users (email,password) VALUES (?,?)",
+    "INSERT INTO Users (email, password) VALUES (?, ?)",
     userData_to_insert
 )
 
+# Use executemany to insert multiple rows into the Accounts table
 cur.executemany(
-    "INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?,?,?,?,?)",
+    "INSERT INTO Accounts (userid, First_name, Last_name, date_of_birth, gender) VALUES (?, ?, ?, ?, ?)",
     accountData_to_insert
 )
 
+# Commit the changes made to the database
 connection.commit()
+
+# Print a message to indicate that the database has been created and the connection is closed
 print("Database Created: Connection Opened")
+
+# Close the database connection
 connection.close()
