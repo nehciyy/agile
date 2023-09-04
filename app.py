@@ -15,7 +15,6 @@ def get_db_connection():
 
 # Checks if User is authenticated. 
 def authenticated():
-    print("i am inside here to authenticate")
     if 'user_id' in session:
         # User is authenticated, allow access 
         return True
