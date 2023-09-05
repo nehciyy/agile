@@ -26,14 +26,10 @@ def authenticated():
 def index():
     return render_template('login.html')
 
-#Route for signup
-@app.route("/home")
-def home():
-    return render_template('home.html')
-
 #Route for login
 @app.route("/login", methods=['GET','POST'])
 def login():
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -48,8 +44,13 @@ def login():
             return redirect(url_for('homepage'))
         else: 
             print('failed to login')
+            flash('Invalid email or password. Please try again.')
+
     if request.method == 'GET':         
-        return render_template('login.html')
+        return render_template('login.html')   
+    
+    # Ensure the route returns a valid response even if the login fails
+    return render_template('login.html')
 
 #Route for logout
 @app.route('/logout')
@@ -59,6 +60,7 @@ def logout():
     # Redirect the user to the login page or any other desired destination
     return redirect(url_for('login'))
 
+#Route for signup
 @app.route("/signup", methods=['GET','POST'])
 def signup():
     if request.method == 'POST':  
