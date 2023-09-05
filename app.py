@@ -41,7 +41,7 @@ def login():
             session['logged_in'] = True
             session['user_id'] = user[0]
             print("LOGIN PAGE ----------------------------------------------------------- " + str(session['user_id']))
-            return redirect(url_for('homepage'))
+            return redirect(url_for('home'))
         else: 
             print('failed to login')
             flash('Invalid email or password. Please try again.')
@@ -120,7 +120,7 @@ def addEducation():
             return redirect(url_for('addEducation'))
         
         if request.method == 'GET': 
-            return render_template('addEducation.html')
+            return render_template('addEducation1.html')
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
@@ -147,15 +147,6 @@ def addExperience():
         
         if request.method == 'GET':
             return render_template('addExperience.html')
-    else:
-        # User is not authenticated, redirect them to the login page or perform other actions
-        return redirect(url_for('login'))
-
-#Route for addCertification
-@app.route("/addCertification")
-def addCertification():
-    if authenticated():
-        return render_template('addCertification.html')
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
@@ -258,10 +249,11 @@ def delete_account():
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
-#Route for homepage
-@app.route("/addhomepage", methods=['GET','POST'])
-def homepage():
+#Route for index
+@app.route("/home", methods=['GET','POST'])
+def home():
     if authenticated():
+        about = about_content()
         if request.method == "GET":
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -298,11 +290,12 @@ def homepage():
             print(results)
 
             conn.close()
-            return render_template('homepage.html', recommendations=results)
+            return render_template('index.html', recommendations=results,about=about)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
+
 #Route for addEducation1
-@app.route("/addEducation1")
-def addEducation1():
-    return render_template('addEducation1.html')
+# @app.route("/addEducation1")
+# def addEducation1():
+#     return render_template('addEducation1.html')

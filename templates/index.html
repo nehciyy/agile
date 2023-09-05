@@ -75,14 +75,16 @@
         <div class="navbar navbar-dark bg-dark shadow-sm">
           <div class="container">
             <a
-              href="/homepage.html"
+              href="/home"
               class="navbar-brand d-flex align-items-center"
             >
               <h4>TechWorld</h4>
             </a>
-            <div class="text" style="display: flex">
-              <a href="/profile">
-                <h4>Aaron Chua</h4>
+            <div class="text">
+              <a href="/profile" style="display: flex; color: white; text-decoration: none;">
+                {% for user in about %}
+                <h4 class="my-3 font-weight-bold">{{user['First_name']}} {{user['Last_name']}}</h5>
+                  {% endfor %}
                 <img
                   src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                   alt="avatar"
@@ -96,7 +98,7 @@
         <section class="py-2 text-center container">
             <div class="row py-lg-2">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h3 style="color: black;">Job Recommendation</h3>
+                    <h3 style="color: white;">Job Recommendation</h3>
                     <div class="form-group">
                         <input id="search" class="form-control text-center" type="text" placeholder="Search for jobs here" >
                     </div>
