@@ -37,7 +37,7 @@
         }
 
         .oval1 {
-            width: 300px;
+            width: 320px;
             height: 40px;
             background: #ADD8E6;
             border-radius: 40px;
@@ -45,7 +45,7 @@
         }
 
         .oval2 {
-            width: 50px;
+            width: 70px;
             height: 30px;
             background: white;
             border-radius: 40px;
@@ -106,10 +106,9 @@
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for row in recommendations %}
                     <div class="col">
-                      {% for row in recommendations %}
                         <h6>{{ row[2] }}</h6>
-                        {% endfor %}
                         <!-- You can access other properties as well, e.g., job.jobskill, job.match, etc. -->
                         <div class="card shadow-sm">
                             <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -126,7 +125,8 @@
                                     Compatability
                                  </div>
                                 <div class="oval2">
-                                    <div style = "position:relative; left:10px; top:2px; color: black;">                                       
+                                    <div style = "position:relative; left:10px; top:2px; color: black;">
+                                        {{ '%.2f'|format(row[4]) }}%                              
                                      </div>
                                 </div>
                             </div>
@@ -153,232 +153,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <h6>Front End Engineer</h6>
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                    dy=".3em">Thumbnail</text>
-                            </svg>
-                        </div>
-                        <div class="row mt-3 ms-auto" style="display: flex; justify-content: center;">
-                            <div class="oval1">
-                                <div style = "position:relative; left:5px; top:7px; color: black;">
-                                    Compatability
-                                 </div>
-                                <div class="oval2">
-                                    <div style = "position:relative; left:10px; top:2px; color: black;">
-                                        85%
-                                     </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#viewfront-modal">View details</button>
-                        </div>
-                        <div class="modal fade" id="viewfront-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-title">Front End Engineer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Front-End Enginners plays a crucial role in shaping the use interface and overall user experience  of webapplications. They collaborate
-                                            closely with cross-functional teams, including desginers and back-end developers, to bring our vision to life. They will be responsible for
-                                            building responsive and visually appealing user interfaces that provide a seamless and engaging experience for our users.
-                                        </p>         
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <h6>Web Designer</h6>
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                    dy=".3em">Thumbnail</text>
-                            </svg>
-                        </div>
-                        <div class="row mt-3 ms-auto" style="display: flex; justify-content: center;">
-                            <div class="oval1">
-                                <div style = "position:relative; left:5px; top:7px; color: black;">
-                                    Compatability
-                                 </div>
-                                <div class="oval2">
-                                    <div style = "position:relative; left:10px; top:2px; color: black;">
-                                        75%
-                                     </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#viewwd-modal">View details</button>
-                        </div>
-                        <div class="modal fade" id="viewwd-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-title">Web Designer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Web Designers are at the forefront of the creative projects, shaping the visual and user experience of clients' websites. They collaborate
-                                            closely with clients and design team to conceptualize and craft visually appealing, intuitive, and functional web designs. They will involve 
-                                            translating client objectives into captivating digital experience.
-                                        </p>         
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <h6>Game Designer</h6>
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                    dy=".3em">Thumbnail</text>
-                            </svg>
-                        </div>
-                        <div class="row mt-3 ms-auto" style="display: flex; justify-content: center;">
-                            <div class="oval1">
-                                <div style = "position:relative; left:5px; top:7px; color: black;">
-                                    Compatability
-                                 </div>
-                                <div class="oval2">
-                                    <div style = "position:relative; left:10px; top:2px; color: black;">
-                                        70%
-                                     </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#viewgd-modal">View details</button>
-                        </div>
-                        <div class="modal fade" id="viewgd-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-title">Game Designer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                          Game Designers are responsible for conceptualizing, designing, and developing engaging gameplay experiences. They collaborate closely with
-                                            cross-functional teams, including artists, programmers, and producers, to bring our game concepts to life. It involves crafting 
-                                            game mechanics, designing levels, and ensuring a seamless player experience.
-                                        </p>         
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <h6>Software Developer</h6>
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                    dy=".3em">Thumbnail</text>
-                            </svg>
-                        </div>
-                        <div class="row mt-3 ms-auto" style="display: flex; justify-content: center;">
-                            <div class="oval1">
-                                <div style = "position:relative; left:5px; top:7px; color: black;">
-                                    Compatability
-                                 </div>
-                                <div class="oval2">
-                                    <div style = "position:relative; left:10px; top:2px; color: black;">
-                                        67%
-                                     </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#viewsd-modal">View details</button>
-                        </div>
-                        <div class="modal fade" id="viewsd-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-title">Software Designer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Software Designers play a pivotal role in shaping the design and user experience of our software products. They collaborate closely with
-                                            cross-functional teams, including software developers, product managers, and user experience designers, to create intuitive and visually appealing software interfaces.
-                                            Your role will involve translating complex technical requirements into elegant and user-friendly designs.
-                                        </p>         
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <h6>Back End Developer</h6>
-                            <div class="card shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                                    <title>Placeholder</title>
-                                    <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                        dy=".3em">Thumbnail</text>
-                                </svg>
-                            </div>
-                            <div class="row mt-3 ms-auto" style="display: flex; justify-content: center;">
-                                <div class="oval1">
-                                    <div style = "position:relative; left:5px; top:7px; color: black;">
-                                        Compatability
-                                     </div>
-                                    <div class="oval2">
-                                        <div style = "position:relative; left:10px; top:2px; color: black;">
-                                            65%
-                                         </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#viewback-modal">View details</button>
-                            </div>
-                            <div class="modal fade" id="viewback-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modal-title">Back End Developer</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>
-                                                Back End Developers are responsible for designing, implementing, and maintaining the server-side components of our web applications and 
-                                                digital platforms. They will work closely with front-end developers, database administrators, and other team members
-                                                to ensure the smooth operation of our software solutions.
-                                            </p>         
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    {% endfor %}
                     </div>
                 </div>
                 <br>
