@@ -1,9 +1,41 @@
-.container{
+.container {
     max-width: 1170px;
     margin: auto;
 }
 
-.footer{
+.footer {
     background-color: #24262b;
     padding: 70px 0;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+label {
+    display: block;
+    margin: 4px 0;
+    padding: 15px 25px;
+    font-weight: 300;
+    text-align: center;
+    color: #24262b;
+    cursor: pointer;
+}
+
+label:hover {
+    color: #007BFF;
+}
+
+input:checked+label {
+    color: #007BFF;
+    text-decoration: underline;
+}
+
+/* Show the content for the selected tab */
+input[type="radio"]:checked+label {
+    background-color: #fff;
+}
+
+input[type="radio"]:checked+label+.tab-content {
+    display: block;
 }
