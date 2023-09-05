@@ -36,7 +36,6 @@ def select_for_skills(account_id):
     query = 'SELECT DISTINCT skills FROM Skills WHERE account_id = ?'
     result = conn.execute(query, (account_id,))
     row = result.fetchall()
-    print("This is for testing --------------------------------------------------")
     conn.close()
     if row:
         for skill in row:
@@ -51,14 +50,18 @@ def job_calc(job, text):
             count += 1
     return count
 
+
 def accuracy(skill_list, job_list, account_id):
+    iteration_count = 0  # Initialize the iteration counter
     for job in job_list: 
         job_skills = set(job['Skills'])
         user_skills = set(skill_list)
         jaccard_sim = jaccard_similarity(user_skills, job_skills)
         match = jaccard_sim * 100
+        print("this is for testing ------------------------------- " + str(iteration_count))
         update_table(match, account_id, job['Header'], job['Skills'])
-        
+        iteration_count += 1
+
 # Function to calculate Jaccard similarity between two sets
 def jaccard_similarity(set1, set2):
     intersection = len(set1.intersection(set2))
@@ -91,7 +94,5 @@ def main(session_id):
         print(f"No account found for session {session_id}")
     userSkills = select_for_skills(account_id)  # Get skills for the user
 
-    # Loop through job entries and calculate matches
-    for entry in jobswithskills_list:
-        skillihave = job_calc(userSkills, entry['Skills'])
-        match = accuracy(userSkills, jobswithskills_list, account_id)
+
+    match = accuracy(userSkills, jobswithskills_list, account_id)
