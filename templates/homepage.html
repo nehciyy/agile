@@ -130,20 +130,18 @@
                                      </div>
                                 </div>
                             </div>
-                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#view-modal">View details</button>
+                            <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#view-modal-{{ loop.index }}">View details</button>
                         </div>
-                        <div class="modal fade" id="view-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+                        <div class="modal fade" id="view-modal-{{ loop.index }}" tabindex="-1" aria-labelledby="modal-title-{{ loop.index }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-title">UI/UX Developer</h5>
+                                        <h5 class="modal-title" id="modal-title-{{ loop.index }}">{{ row[2] }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>
-                                            UI/UX designers are responsible for designing and improving the user Interface (UI) and user experience (UX) of digital products,
-                                            such as websites, mobile apps, and software application. The goal of UI/UX designers is to create interfaces that are intuitive, efficent
-                                            and aesthetically pleasing, while also meeting the needs od end users
+                                        <p>       
+                                            {{ row[3] }}                                                                                                               
                                         </p>         
                                     </div>
                                     <div class="modal-footer">
