@@ -162,10 +162,19 @@ def addCertification():
 @app.route("/profile")
 def profile():
     if authenticated():
-        return render_template('profile.html')
+        about = about_content()
+        return render_template('profile.html', about=about)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
+def about_content():
+    db = get_db_connection()
+    account_id = session['user_id']
+    query = "SELECT A.First_name, A.Last_name, A.date_of_birth, A.gender, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id WHERE A.userid = ?"
+    user = db.execute(query, (account_id,)).fetchall()
+    db.close()
+    return user
+
 #Route for addSkill
 @app.route("/addSkill", methods=['GET', 'POST'])
 def addSkill():
@@ -190,12 +199,13 @@ def addSkill():
             conn = get_db_connection()
             account_id = session['user_id']
             print(account_id)
-            skills = conn.execute('SELECT account_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
+            skills = conn.execute('SELECT skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
             conn.close()
             return render_template('addSkill.html', skills=skills)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
+    
 #Route for administrator
 @app.route("/administrator", methods=['GET'])
 def administrator():
@@ -254,7 +264,7 @@ def homepage():
             conn = get_db_connection()
             cursor = conn.cursor()
 
-            # Delete rows that match the session user_id
+            # Use a parameterized query to delete rows
             query_delete = '''
                 DELETE FROM recommendateJobs
                 WHERE account_id IN (
@@ -263,23 +273,26 @@ def homepage():
                     WHERE userid = ?
                 )
             '''
-            cursor.execute(query_delete, (session['user_id'],))
-            conn.commit()  # Commit the deletion
-
+            try:
+                cursor.execute(query_delete, (session['user_id'],))
+                conn.commit()
+                print("Rows deleted successfully.")
+            except sqlite3.Error as e:
+                print("Error:", e)
             # After deletion, print and retrieve updated recommendations
             print("----------------------------------------------------------- " + str(session['user_id']))
             jobalgorithm.main(session['user_id'])
             
             # Query for recommendations after deletion
             query_select = '''
-            SELECT R.* 
-            FROM recommendateJobs AS R
-            JOIN Accounts AS A ON R.account_id = A.account_id
-            WHERE A.userid = ? AND R.match <> 0.0
-            ORDER BY R.match DESC;
-            '''
+                        SELECT R.* 
+                        FROM recommendateJobs AS R
+                        JOIN Accounts AS A ON R.account_id = A.account_id
+                        WHERE A.userid = ? AND R.match <> 0.0
+                        ORDER BY R.match DESC
+                    '''
             cursor.execute(query_select, (session['user_id'],))
-            results = cursor.fetchone()
+            results = cursor.fetchall()
             print(results)
 
             conn.close()
