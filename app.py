@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+from flask_tinymce import TinyMCE
 
 import sqlite3
 import recommendation as jobalgorithm
@@ -6,6 +7,8 @@ import recommendation as jobalgorithm
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+tinymce = TinyMCE()
+tinymce.init_app(app)
 
 #DB Connection Function Object
 def get_db_connection():
@@ -137,13 +140,13 @@ def addExperience():
             start_year = request.form['start_year']
             end_month = request.form['end_month']
             end_year = request.form['end_year']
-            industry = request.form['industry']
+            description = request.form['tinymce']
 
             db = get_db_connection()
-            user = db.execute('INSERT INTO Experience (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, Title, employmentType, start_month, start_year, end_month, end_year, industry))
+            user = db.execute('INSERT INTO Experience (account_id, Title, employmentType, start_month, start_year, end_month, end_year, role_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, Title, employmentType, start_month, start_year, end_month, end_year, description))
             db.commit()
             print('Success')
-            return redirect(url_for('addExperience'))
+            return redirect(url_for('addEducation'))
         
         if request.method == 'GET':
             return render_template('addExperience.html')
@@ -156,7 +159,10 @@ def addExperience():
 def profile():
     if authenticated():
         about = about_content()
-        return render_template('profile.html', about=about)
+        education = education_content()
+        experience = experience_content()
+        skills = skills_content()
+        return render_template('profile.html', about=about, skills=skills, education=education, experience=experience)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
@@ -167,6 +173,24 @@ def about_content():
     user = db.execute(query, (account_id,)).fetchall()
     db.close()
     return user
+def skills_content():
+    db = get_db_connection()
+    account_id = session['user_id']
+    skills = db.execute('SELECT skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
+    db.close()
+    return skills
+def education_content():
+    db = get_db_connection()
+    account_id = session['user_id']
+    education = db.execute('SELECT degree, field_of_study, start_month, start_year, end_month, end_year, grade FROM Education WHERE account_id = ?', (account_id,)).fetchall()
+    db.close()
+    return education
+def experience_content():
+    db = get_db_connection()
+    account_id = session['user_id']
+    experience = db.execute('SELECT Title, employmentType, start_month, start_year, end_month, end_year, role_description FROM Experience WHERE account_id = ?', (account_id,)).fetchall()
+    db.close()
+    return experience
 
 #Route for addSkill
 @app.route("/addSkill", methods=['GET', 'POST'])
@@ -177,6 +201,9 @@ def addSkill():
             proficiencies = request.form.getlist('proficiency[]')
             account_id = session['user_id']
 
+            for i in range(len(skills)):
+                skills[i] = skills[i].lower()
+                
             print(skills)
             print(proficiencies)
 
