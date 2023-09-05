@@ -58,20 +58,6 @@ CREATE TABLE Education (
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );
 
--- Create Certificate Table
-CREATE TABLE Certificate (
-    certificate_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    account_id INTEGER,
-    name_of_certificate VARCHAR(50) NOT NULL,
-    Issuing_organization VARCHAR(50) NOT NULL,
-    issue_month TEXT NOT NULL,
-    issue_year INTEGER NOT NULL,
-    end_month TEXT NOT NULL,
-    end_year INTEGER NOT NULL,
-    isExpired BOOLEAN NOT NULL,
-    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
-);
-
 -- Create recommendedJobs Table
 CREATE TABLE recommendateJobs (
     recommendateJobs_id INTEGER PRIMARY KEY AUTOINCREMENT,
