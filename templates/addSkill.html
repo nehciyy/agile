@@ -13,9 +13,8 @@
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <style>
     h4 {
@@ -101,11 +100,20 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Added Skills</h5>
-                        <div class="list-group flex-grow-1">
-                            {% for skill, proficiency in skills %}
-                            <a class="list-group-item">{{ skill }} ({{ proficiency }})</a>
-                            {% endfor %}
-                        </div>
+                        {% for skill_id, skill, proficiency in skills %}
+                        <form method="POST" action="/deleteSkill" class="delete-skill-form">
+                            <div class="list-group flex-grow-1">
+                                <div class="list-group-item ">
+                                    {{skill_id}} {{ skill }} ({{ proficiency }})
+                                    <input type="hidden" name="skill_id" value="{{ skill_id }}">
+                                    <button type="submit" class="btn btn-link text-dark float-end"
+                                        onclick="return confirm('Are you sure you want to delete?')">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

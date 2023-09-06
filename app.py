@@ -219,13 +219,35 @@ def addSkill():
             conn = get_db_connection()
             account_id = session['user_id']
             print(account_id)
-            skills = conn.execute('SELECT skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
+            skills = conn.execute('SELECT skill_id, skills, proficiency FROM Skills WHERE account_id = ?', (account_id,)).fetchall()
             conn.close()
             return render_template('addSkill.html', skills=skills)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
     
+#Route to delete skill
+@app.route("/deleteSkill", methods=['POST'])
+def delete_skill():
+    if authenticated():
+        try:
+            db = get_db_connection()
+            cursor = db.cursor()
+            account_id = session['user_id']
+            skill_id = request.form.get('skill_id')
+            print("Skill_id: " + skill_id)
+            cursor.execute("DELETE FROM Skills WHERE account_id = ? AND skill_id = ?", (account_id, skill_id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("Error:", e)
+        finally:
+            db.close()
+
+        return redirect(url_for('addSkill'))
+    else:
+        # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
+
 #Route for administrator
 @app.route("/administrator", methods=['GET'])
 def administrator():
@@ -276,6 +298,7 @@ def delete_account():
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
+
 #Route for index
 @app.route("/home", methods=['GET','POST'])
 def home():
