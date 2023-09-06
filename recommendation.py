@@ -18,13 +18,12 @@ import csv
 
 # Function to read data from a CSV file (skills list)
 def read_csv(file):
-    """Reads data from a CSV file containing skills list."""
     extracted_data = []
     with open(file, 'r', newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
             header = row['Header']
-            skills = [skill.strip() for skill in row['Skills'].split(',')]
+            skills = [skill.strip().lower() for skill in row['Skills'].split(',')]  # Convert skills to lowercase
             extracted_data.append({'Header': header, 'Skills': skills})
     return extracted_data
 
@@ -93,6 +92,5 @@ def main(session_id):
     else:
         print(f"No account found for session {session_id}")
     userSkills = select_for_skills(account_id)  # Get skills for the user
-
 
     match = accuracy(userSkills, jobswithskills_list, account_id)
