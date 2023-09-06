@@ -3,6 +3,7 @@ from flask_tinymce import TinyMCE
 
 import sqlite3
 import recommendation as jobalgorithm
+import os.path
 
 
 app = Flask(__name__)
@@ -12,7 +13,9 @@ tinymce.init_app(app)
 
 #DB Connection Function Object
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(BASE_DIR, "database.db")
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
