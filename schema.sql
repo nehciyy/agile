@@ -64,5 +64,6 @@ CREATE TABLE recommendateJobs (
     jobheader TEXT,
     jobskill TEXT,
     match REAL,
+    imagePaths TEXT,
     FOREIGN KEY (account_id) REFERENCES Accounts(account_id)
 );

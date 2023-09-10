@@ -24,7 +24,9 @@ def read_csv(file):
         for row in reader:
             header = row['Header']
             skills = [skill.strip().lower() for skill in row['Skills'].split(',')]  # Convert skills to lowercase
-            extracted_data.append({'Header': header, 'Skills': skills})
+            imagePath = row['Image_Path']
+            extracted_data.append({'Header': header, 'Skills': skills, 'imagePath': imagePath})
+            print(extracted_data)
     return extracted_data
 
 # Function to select skills for a given account_id from the database
@@ -58,7 +60,7 @@ def accuracy(skill_list, job_list, account_id):
         jaccard_sim = jaccard_similarity(user_skills, job_skills)
         match = jaccard_sim * 100
         print("this is for testing ------------------------------- " + str(iteration_count))
-        update_table(match, account_id, job['Header'], job['Skills'])
+        update_table(match, account_id, job['Header'], job['Skills'],job['imagePath'])
         iteration_count += 1
 
 # Function to calculate Jaccard similarity between two sets
@@ -70,10 +72,10 @@ def jaccard_similarity(set1, set2):
     return intersection / len(set2)
 
 # Function to update a database table with job recommendations and match percentage
-def update_table(match, account_id, job_header, job_skills):
+def update_table(match, account_id, job_header, job_skills, imagePaths):
     conn = get_db_connection()  # Get a database connection
-    conn.execute("INSERT INTO recommendateJobs (account_id, jobheader, jobskill, match) VALUES (?, ?, ?, ?)",
-                 (account_id, job_header, ', '.join(job_skills), match))
+    conn.execute("INSERT INTO recommendateJobs (account_id, jobheader, jobskill, match, imagePaths) VALUES (?, ?, ?, ?, ?)",
+                 (account_id, job_header, ', '.join(job_skills), match, imagePaths))
     conn.commit()
     conn.close()
 
@@ -92,5 +94,5 @@ def main(session_id):
     else:
         print(f"No account found for session {session_id}")
     userSkills = select_for_skills(account_id)  # Get skills for the user
-
-    match = accuracy(userSkills, jobswithskills_list, account_id)
+    
+    match = accuracy(userSkills, jobswithskills_list, account_id)  # Calculate the match percentage

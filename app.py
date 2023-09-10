@@ -348,7 +348,7 @@ def home():
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
 
-#Route for addEducation1
-# @app.route("/addEducation1")
-# def addEducation1():
-#     return render_template('addEducation1.html')
+# Configure the static folder
+@app.route('/images/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
