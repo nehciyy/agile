@@ -347,8 +347,3 @@ def home():
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
         return redirect(url_for('login'))
-
-# Configure the static folder
-@app.route('/images/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(app.static_folder, filename)
