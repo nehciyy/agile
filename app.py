@@ -27,6 +27,22 @@ def authenticated():
     else:
         # User is not authenticated, return False
         return False
+    
+#Checks if user is an admin
+def is_admin():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        conn = get_db_connection()
+        query = "SELECT is_admin FROM Users WHERE user_id = ?"
+        is_admin = conn.execute(query, (user_id,)).fetchone()[0]
+        print(is_admin)
+        conn.close()
+        if is_admin == 'True':
+            return True
+        else:
+            return False
+    else:
+        return False
 #Routes
 @app.route("/")
 def index():
@@ -254,7 +270,7 @@ def delete_skill():
 #Route for administrator
 @app.route("/administrator", methods=['GET'])
 def administrator():
-    if authenticated():
+    if is_admin():
         conn = get_db_connection()
         query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
         user = conn.execute(query).fetchall()
@@ -262,7 +278,7 @@ def administrator():
         return render_template("administrator.html", accounts=user)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
-        return redirect(url_for('login'))
+        return redirect(url_for('error'))
 
 #Route to delete account for administrator
 @app.route("/deleteAccount", methods=['POST'])
@@ -346,4 +362,12 @@ def home():
             return render_template('index.html', recommendations=results,about=about)
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
+        return redirect(url_for('login'))
+    
+#Route for Error
+@app.route("/error", methods=['GET'])
+def error():
+    if authenticated():
+        return render_template("errorMessage.html")
+    else:
         return redirect(url_for('login'))

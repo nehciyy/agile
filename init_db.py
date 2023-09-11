@@ -12,9 +12,10 @@ cur = connection.cursor()
 
 # List of data to insert into the Users table
 userData_to_insert = [
-    ("aaronlim123@gmail.com", "Password001"),
-    ("emilysmith@example.com", "Password002"),
-    ("johndoe@example.com", "Password003"),
+    ("aaronlim123@gmail.com", "Password001", "False"),
+    ("emilysmith@example.com", "Password002", "False"),
+    ("johndoe@example.com", "Password003", "False"),
+    ("admin@example.com", "admin123", "True")
 ]
 
 # List of data to insert into the Accounts table
@@ -22,11 +23,12 @@ accountData_to_insert = [
     (1, "Aaron", "Lim", "2000/01/01", "Male"),
     (2, "Emily", "Smith", "1995/03/15", "Female"),
     (3, "John", "Doe", "1988/11/30", "Male"),
+    (4, "Admin", "User", "2000/01/01", "Male"),
 ]
 
 # Use executemany to insert multiple rows into the Users table
 cur.executemany(
-    "INSERT INTO Users (email, password) VALUES (?, ?)",
+    "INSERT INTO Users (email, password, is_admin) VALUES (?, ?, ?)",
     userData_to_insert
 )
 
