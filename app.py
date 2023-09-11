@@ -139,7 +139,7 @@ def addEducation():
             user = db.execute('INSERT INTO Education (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (account_id, degree, field_of_study, start_month, start_year, end_month, end_year, grade))
             db.commit()
             print("Success")
-            return redirect(url_for('addEducation'))
+            return redirect(url_for('profile'))
         
         if request.method == 'GET': 
             return render_template('addEducation1.html')
