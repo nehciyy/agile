@@ -6,7 +6,7 @@ BEGIN TRANSACTION;
 CREATE TABLE Users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     email VARCHAR(50) UNIQUE NOT NULL,
-    is_admin TEXT,
+    is_admin boolean,
     password VARCHAR(50) NOT NULL
 );
 
