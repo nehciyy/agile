@@ -35,7 +35,6 @@ def is_admin():
         conn = get_db_connection()
         query = "SELECT is_admin FROM Users WHERE user_id = ?"
         is_admin = conn.execute(query, (user_id,)).fetchone()[0]
-        print(is_admin)
         conn.close()
         if is_admin == 'True':
             return True
@@ -51,7 +50,6 @@ def index():
 #Route for login
 @app.route("/login", methods=['GET','POST'])
 def login():
-
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -68,7 +66,6 @@ def login():
             else:
                 return redirect(url_for('home'))
         else: 
-            print('failed to login')
             flash('Invalid email or password. Please try again.')
 
     if request.method == 'GET':         
@@ -226,9 +223,6 @@ def addSkill():
             for i in range(len(skills)):
                 skills[i] = skills[i].lower()
                 
-            print(skills)
-            print(proficiencies)
-
             for skill, proficiency in zip(skills, proficiencies):
                 db = get_db_connection()
                 user = db.execute('INSERT INTO Skills (account_id, skills, proficiency) VALUES (?,?,?)', (account_id,skill,proficiency))
