@@ -279,7 +279,7 @@ def administrator():
 
 #Route to delete account for administrator
 @app.route("/deleteAccount", methods=['POST'])
-def delete_account():
+def delete_account():   
     if authenticated():
         try:
             conn = get_db_connection()
@@ -288,8 +288,6 @@ def delete_account():
             account_id = request.form.get('account_id')
             # Execute the DELETE queries within a transaction
             cursor.execute("BEGIN TRANSACTION;")
-            # Delete from Certificate table
-            cursor.execute("DELETE FROM Certificate WHERE account_id = ?", (account_id,))
             # Delete from Education table
             cursor.execute("DELETE FROM Education WHERE account_id = ?", (account_id,))
             # Delete from Experience table
