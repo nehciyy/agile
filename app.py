@@ -63,7 +63,10 @@ def login():
             session['logged_in'] = True
             session['user_id'] = user[0]
             print("LOGIN PAGE ----------------------------------------------------------- " + str(session['user_id']))
-            return redirect(url_for('home'))
+            if is_admin():
+                return redirect(url_for('administrator'))
+            else:
+                return redirect(url_for('home'))
         else: 
             print('failed to login')
             flash('Invalid email or password. Please try again.')
