@@ -53,15 +53,12 @@ def job_calc(job, text):
 
 
 def accuracy(skill_list, job_list, account_id):
-    iteration_count = 0  # Initialize the iteration counter
     for job in job_list: 
         job_skills = set(job['Skills'])
         user_skills = set(skill_list)
         jaccard_sim = jaccard_similarity(user_skills, job_skills)
         match = jaccard_sim * 100
-        print("this is for testing ------------------------------- " + str(iteration_count))
         update_table(match, account_id, job['Header'], job['Skills'],job['imagePath'])
-        iteration_count += 1
 
 # Function to calculate Jaccard similarity between two sets
 def jaccard_similarity(set1, set2):
