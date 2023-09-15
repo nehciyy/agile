@@ -269,7 +269,7 @@ def delete_skill():
 def administrator():
     if is_admin():
         conn = get_db_connection()
-        query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id"
+        query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id WHERE is_admin = 'False'"
         user = conn.execute(query).fetchall()
         conn.close()
         return render_template("administrator.html", accounts=user)
