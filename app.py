@@ -390,7 +390,7 @@ def administrator():
         user = conn.execute(query).fetchall()
         conn.close()
         return render_template(
-            "administrator.html", accounts=user, admin=is_admin(), about=about
+            "administrator.html", accounts=user, admin=is_admin(), about=about_content()
         )
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
