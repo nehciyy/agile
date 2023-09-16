@@ -102,11 +102,6 @@
                                     <button type="submit" class="btn btn-primary profile-button">
                                         Save
                                     </button>
-                                    <a href="/addExperience" style="padding-left: 5px;">
-                                        <button class="btn btn-secondary ml-2" type="button">
-                                            Skip
-                                        </button>
-                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -130,6 +125,14 @@
                                 </div>
                             </form>
                             {% endfor %}
+                            <br/>
+                            {% if skills | length > 0 %}
+                            <a href="/addExperience" style="padding-left: 5px; float: right;">
+                                <button class="btn btn-secondary ml-2" type="button">
+                                    Next
+                                </button>
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
