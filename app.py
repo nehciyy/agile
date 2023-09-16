@@ -125,7 +125,6 @@ def signup():
             # Add the user_id to the session
             session["logged_in"] = True
             session["user_id"] = user_id
-            print(session["user_id"])
             # Close the cursor and database connection
             cursor.close()
             db.close()
@@ -425,11 +424,6 @@ def delete_account():
             cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
             # Commit the transaction
             cursor.execute("COMMIT;")
-            flash(
-                "All data related to the account has been deleted successfully!",
-                "success",
-            )
-
         except Exception as e:
             flash(
                 "An error occurred while deleting the account and related data.",
