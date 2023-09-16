@@ -425,10 +425,6 @@ def delete_account():
             cursor.execute("DELETE FROM Accounts WHERE account_id = ?", (account_id,))
             # Commit the transaction
             cursor.execute("COMMIT;")
-            flash(
-                "All data related to the account has been deleted successfully!",
-                "success",
-            )
 
         except Exception as e:
             flash(
