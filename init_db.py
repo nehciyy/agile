@@ -12,10 +12,10 @@ cur = connection.cursor()
 
 # List of data to insert into the Users table
 userData_to_insert = [
-    ("aaronlim123@gmail.com", "Password001", "False"),
-    ("emilysmith@example.com", "Password002", "False"),
-    ("johndoe@example.com", "Password003", "False"),
-    ("admin@example.com", "admin123", "True")
+    ("aaronlim123@gmail.com", "Password001", 0),
+    ("emilysmith@example.com", "Password002", 0),
+    ("johndoe@example.com", "Password003", 0),
+    ("admin@example.com", "admin123", 1)
 ]
 
 # List of data to insert into the Accounts table

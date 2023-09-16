@@ -38,8 +38,8 @@ def is_admin():
         conn = get_db_connection()
         query = "SELECT is_admin FROM Users WHERE user_id = ?"
         is_admin = conn.execute(query, (user_id,)).fetchone()[0]
-        conn.close()
-        if is_admin == "True":
+        conn.close()    
+        if is_admin == 1:
             return True
         else:
             return False
@@ -108,8 +108,9 @@ def signup():
             db = get_db_connection()
             # Insert into User Table
             cursor = db.cursor()
+            isadmin = False
             cursor.execute(
-                "INSERT INTO Users (email, password) VALUES (?, ?)", (email, password)
+                "INSERT INTO Users (email, password, is_admin) VALUES (?, ?, ?)", (email, password, isadmin)
             )
             db.commit()
             # Get the user_id of the inserted user
@@ -386,7 +387,7 @@ def delete_skill():
 def administrator():
     if is_admin():
         conn = get_db_connection()
-        query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id WHERE is_admin = 'False'"
+        query = "SELECT A.account_id, A.First_name, A.Last_name, U.email FROM Accounts A JOIN Users U ON A.userid = U.user_id WHERE is_admin = '0'"
         user = conn.execute(query).fetchall()
         conn.close()
         return render_template(
