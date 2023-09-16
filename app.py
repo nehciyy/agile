@@ -69,10 +69,6 @@ def login():
         if user:
             session["logged_in"] = True
             session["user_id"] = user[0]
-            print(
-                "LOGIN PAGE ----------------------------------------------------------- "
-                + str(session["user_id"])
-            )
             if is_admin():
                 return redirect(url_for("administrator"))
             else:
@@ -169,7 +165,6 @@ def addEducation():
                 ),
             )
             db.commit()
-            print("Success")
             return redirect(url_for("profile"))
 
         if request.method == "GET":
@@ -209,7 +204,6 @@ def addExperience():
                 ),
             )
             db.commit()
-            print("Success")
             return redirect(url_for("addEducation"))
 
         if request.method == "GET":
@@ -312,7 +306,6 @@ def edit_profile():
                     ),
                 )
                 cursor.execute("COMMIT;")
-                flash("Successfully Updated!")
             except Exception as e:
                 flash("An error occurred while deleting the account and related data.")
             finally:
@@ -342,8 +335,6 @@ def addSkill():
                     (account_id, skill, proficiency),
                 )
                 db.commit()
-                print("Success")
-
             return redirect(url_for("addSkill"))
 
         if request.method == "GET":
@@ -399,7 +390,7 @@ def administrator():
         user = conn.execute(query).fetchall()
         conn.close()
         return render_template(
-            "administrator.html", accounts=user, admin=is_admin(), about=about
+            "administrator.html", accounts=user, admin=is_admin(), about=about_content()
         )
     else:
         # User is not authenticated, redirect them to the login page or perform other actions
@@ -478,11 +469,7 @@ def home():
                 print("Rows deleted successfully.")
             except sqlite3.Error as e:
                 print("Error:", e)
-            # After deletion, print and retrieve updated recommendations
-            print(
-                "----------------------------------------------------------- "
-                + str(session["user_id"])
-            )
+            # After deletion, retrieve updated recommendations
             jobalgorithm.main(session["user_id"])
 
             # Query for recommendations after deletion
@@ -495,7 +482,6 @@ def home():
                     """
             cursor.execute(query_select, (session["user_id"],))
             results = cursor.fetchall()
-            print(results)
 
             conn.close()
             return render_template(
